@@ -1,12 +1,26 @@
 #!/bin/bash
 
-DIR=~/dotfiles
-OLDDIR=~/dotfiles_old
-FILES=".gitconfig"
+setup_symlinks() {
+  local dir=~/dotfiles
+  local olddir=~/dotfiles_old
+  local files=(
+    .gitconfig
+    .bashrc
+    .profile
+  )
 
-mkdir -p $OLDDIR
+  mkdir -p $olddir
 
-for FILE in $FILES; do
-  mv ~/.$FILE $OLDDIR/
-  ln -s $DIR/$FILE ~/$FILE
-done
+  for file in ${files[*]}; do
+    mv ~/$file $olddir/
+    ln -s $dir/$file ~/$file
+  done
+}
+
+main() {
+  . .profile
+
+  setup_symlinks
+}
+
+main
