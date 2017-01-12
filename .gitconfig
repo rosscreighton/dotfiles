@@ -1,10 +1,10 @@
 [user]
-	name = ross creighton
-	email = rosson.creighton@gmail.com
+  name = ross creighton
+  email = rosson.creighton@gmail.com
 [alias]
   s = status
-	co = checkout
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr, %cn)%Creset' --abbrev-commit --date=relative
+  co = checkout
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr, %cn)%Creset' --abbrev-commit --date=relative
 [push]
   default = current
 [pull]
