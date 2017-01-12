@@ -1,13 +1,12 @@
 #!/bin/bash
 
-dir=~/dotfiles
-olddir=~/dotfiles_old
-files=".gitconfig"
+DIR=~/dotfiles
+OLDDIR=~/dotfiles_old
+FILES=".gitconfig"
 
-mkdir -p $olddir
-cd $dir
+mkdir -p $OLDDIR
 
-for file in $files; do
-  mv ~/.$file ~/dotfiles_old/
-  ln -s $dir/$file ~/.$file
+for FILE in $FILES; do
+  mv ~/.$FILE $OLDDIR/
+  ln -s $DIR/$FILE ~/$FILE
 done
