@@ -5,6 +5,9 @@
   s = status
   co = checkout
   f = fetch
+  r = reset
+  rh = reset --hard
+  rs = reset --soft
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr, %cn)%Creset' --abbrev-commit --date=relative
 [push]
   default = current
