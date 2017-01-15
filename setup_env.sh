@@ -6,6 +6,7 @@ setup_symlinks() {
   local files=(
     .gitconfig
     .bashrc
+    .bash_colors
     .profile
   )
 
