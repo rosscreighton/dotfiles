@@ -1,6 +1,10 @@
 [user]
   name = ross creighton
   email = rosson.creighton@gmail.com
+[difftool]
+  prompt = false
+[color]
+  ui = true
 [alias]
   s = status
   co = checkout
@@ -8,6 +12,7 @@
   r = reset
   rh = reset --hard
   rs = reset --soft
+  d = difftool
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr, %cn)%Creset' --abbrev-commit --date=relative
 [push]
   default = current
