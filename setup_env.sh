@@ -8,7 +8,7 @@ install_git_completion() {
 
 setup_symlinks() {
   local dir=~/dotfiles
-  local olddir=~/dotfiles_old
+  local olddir=~/dotfiles_old/${date}
   local files=(
     .gitconfig
     .bashrc
@@ -19,7 +19,7 @@ setup_symlinks() {
   mkdir -p $olddir
 
   for file in ${files[*]}; do
-    mv ~/$file $olddir/
+    mv ~/$file $olddir/$file
     ln -s $dir/$file ~/$file
   done
 }
