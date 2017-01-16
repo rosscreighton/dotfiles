@@ -5,11 +5,6 @@ alias vs="vagrant ssh"
 
 . ~/.bash_colors
 
-# enable bash tab completion
-if [[ -e /etc/bash_completion ]]; then
-  . /etc/bash_completion
-fi
-
 # enable git tab completion
 if [[ -e ~/.git-completion.bash ]]; then
   . ~/.git-completion.bash
