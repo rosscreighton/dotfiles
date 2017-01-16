@@ -33,7 +33,7 @@ function __prompt_command {
 
   # Is it bad?
   if [ $EXIT != 0 ]; then
-      PS1+="${Red}→ $EXIT${Color_Off}"      # Add red if exit code non 0
+      PS1+="${Red}→ $EXIT${Color_Off} "      # Add red if exit code non 0
   fi
 
   PS1+="$ "
