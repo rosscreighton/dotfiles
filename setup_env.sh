@@ -1,5 +1,11 @@
 #!/bin/bash
 
+install_git_completion() {
+  if [[ ! -e ~/.git-completion.bash ]]; then
+    curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+  fi
+}
+
 setup_symlinks() {
   local dir=~/dotfiles
   local olddir=~/dotfiles_old
@@ -19,6 +25,8 @@ setup_symlinks() {
 }
 
 main() {
+  install_git_completion
+
   . .profile
 
   setup_symlinks
