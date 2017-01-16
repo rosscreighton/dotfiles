@@ -1,5 +1,7 @@
 alias ol="cd ~/projects/outland"
 alias gitx="open -a gitx ./"
+alias vu="vagrant up"
+alias vs="vagrant ssh"
 
 . ~/.bash_colors
 
