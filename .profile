@@ -3,6 +3,15 @@ alias gitx="open -a gitx ./"
 alias vu="vagrant up"
 alias vs="vagrant ssh"
 
+
+# set up nvm
+export NVM_DIR="$HOME/.nvm"
+
+if which brew &> /dev/null; then
+  . $(brew --prefix nvm)/nvm.sh
+fi
+
+# set up virtualenv wrapper
 if [[ -e $(echo which virtualenvwrapper.sh) ]]; then
   . $(which virtualenvwrapper.sh)
 fi
