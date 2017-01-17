@@ -3,6 +3,10 @@ alias gitx="open -a gitx ./"
 alias vu="vagrant up"
 alias vs="vagrant ssh"
 
+if which virtualenvwrapper.sh > /dev/null 2> /dev/null; then
+  . $(which virtualenvwrapper.sh)
+fi
+
 . ~/.bash_colors
 
 # enable git tab completion
