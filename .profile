@@ -3,7 +3,7 @@ alias gitx="open -a gitx ./"
 alias vu="vagrant up"
 alias vs="vagrant ssh"
 
-if which virtualenvwrapper.sh > /dev/null 2> /dev/null; then
+if [[ -e $(echo which virtualenvwrapper.sh) ]]; then
   . $(which virtualenvwrapper.sh)
 fi
 
