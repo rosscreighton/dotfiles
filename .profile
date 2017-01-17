@@ -3,6 +3,8 @@ alias gitx="open -a gitx ./"
 alias vu="vagrant up"
 alias vs="vagrant ssh"
 
+# set umask to 002 so we can use brew for multiple users
+umask 002
 
 # set up nvm
 export NVM_DIR="$HOME/.nvm"
