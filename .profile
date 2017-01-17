@@ -20,17 +20,17 @@ function parse_hg_branch {
 
 function __prompt_command {
   local EXIT="$?" # must do this first
-  PS1="${BBlue}\u${Color_Off}@"
+  PS1="\[${BBlue}\]\u\[${Color_Off}\]@"
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-      PS1+="${BRed}\h "
+      PS1+="\[${BRed}\]\h "
   else
-      PS1+="${BGreen}\h "
+      PS1+="\[${BGreen}\]\h "
   fi
-  PS1+="${BYellow}\w ${Yellow}$(parse_git_branch)$(parse_hg_branch)${Color_Off} "
+  PS1+="\[${BYellow}\]\w \[${Yellow}\]$(parse_git_branch)$(parse_hg_branch)\[${Color_Off}\] "
 
   # Is it bad?
   if [ $EXIT != 0 ]; then
-      PS1+="${Red}→ $EXIT${Color_Off} "      # Add red if exit code non 0
+      PS1+="\[${Red}\]→ $EXIT\[${Color_Off}\] "      # Add red if exit code non 0
   fi
 
   PS1+="$ "
