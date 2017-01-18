@@ -31,15 +31,15 @@ alias vs="vagrant ssh"
 umask 002
 
 
-### PACKAGE CONFIGURATION
+### SOURCING
 #------------------------------------------------------------
+
+. ~/.bash_colors
 
 # gets virtualenvwrapper working in vagrant box
 if [[ -e $(which virtualenvwrapper.sh) ]]; then
   . $(which virtualenvwrapper.sh)
 fi
-
-. ~/.bash_colors
 
 # enable git tab completion
 if [[ -e ~/.git-completion.bash ]]; then
