@@ -3,15 +3,25 @@ alias gitx="open -a gitx ./"
 alias vu="vagrant up"
 alias vs="vagrant ssh"
 
-# set umask to 002 so we can use brew for multiple users
+# why do i change the default umask?
+# i like to have multiple accounts on my dev machine,
+# one for personal work, one for company work. i also
+# like to use homebrew to manage packages on my mac.
+# homebrew installs packages at a system level, and
+# all user accounts share these packages. the permissions
+# on the homebrew install directory are set based on
+# the user installing the package, so i get permission
+# denied when one user installs a package, and another
+# attempts to delete or upgrade it. in order to use
+# homebrew in this way, one must continuously switch the
+# owner of the homebrew dir between users. the way i
+# avoid this headache is to create a third entity, a
+# group, add each user to it, and make that group the
+# owner of the homebrew dir. see ./setup_homebrew_permissions
+# for details. groups cannot have write permissions by
+# default, so in order for ./setup_homebrew_permissions.sh
+# to work, we must change the user's default umask to 002.
 umask 002
-
-# set up nvm
-export NVM_DIR="$HOME/.nvm"
-
-if which brew &> /dev/null; then
-  . $(brew --prefix nvm)/nvm.sh
-fi
 
 # set up virtualenv wrapper
 if [[ -e $(echo which virtualenvwrapper.sh) ]]; then
@@ -51,5 +61,11 @@ function __prompt_command {
   PS1+="$ "
 }
 
-
 export PROMPT_COMMAND=__prompt_command
+
+# set up nvm
+export NVM_DIR="$HOME/.nvm"
+
+if which brew &> /dev/null; then
+  . $(brew --prefix nvm)/nvm.sh
+fi
