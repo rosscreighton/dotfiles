@@ -35,7 +35,7 @@ umask 002
 #------------------------------------------------------------
 
 # gets virtualenvwrapper working in vagrant box
-if [[ -e $(echo which virtualenvwrapper.sh) ]]; then
+if [[ -e $(which virtualenvwrapper.sh) ]]; then
   . $(which virtualenvwrapper.sh)
 fi
 
