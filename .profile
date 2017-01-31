@@ -1,4 +1,10 @@
-### ALIASES
+### TERMINAL PREFS
+#------------------------------------------------------------
+
+export HISTCONTROL=ignoreboth:erasedups
+
+
+## ALIASES
 #------------------------------------------------------------
 
 alias ol="cd ~/projects/outland"
