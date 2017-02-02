@@ -74,7 +74,7 @@ function parse_hg_branch {
 
 function __prompt_command {
   local EXIT="$?" # must do this first
-  PS1="\[${BBlue}\]\u\[${Color_Off}\]@"
+  PS1="\[${BIBlue}\]\u\[${Color_Off}\]@"
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
       PS1+="\[${BRed}\]\h "
   else
