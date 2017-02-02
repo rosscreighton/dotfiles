@@ -22,9 +22,16 @@ install_git_completion() {
   fi
 }
 
+install_vim_plug() {
+  if [[ ! -e ~/.vim/autoload/plug.vim ]]; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  fi
+}
+
 main() {
   install_git_completion
   install_brew_packages
+  install_vim_plug
 }
 
 main
