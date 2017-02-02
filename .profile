@@ -2,6 +2,7 @@
 #------------------------------------------------------------
 
 export HISTCONTROL=ignoreboth:erasedups
+export CLICOLOR=1
 
 
 ## ALIASES
