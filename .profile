@@ -81,7 +81,7 @@ function __prompt_command {
   else
       PS1+="\[${BGreen}\]\h "
   fi
-  PS1+="\[${BYellow}\]\w \[${Yellow}\]$(parse_git_branch)$(parse_hg_branch)\[${Color_Off}\] "
+  PS1+="\[${BYellow}\]\w \[${Cyan}\]$(parse_git_branch)$(parse_hg_branch)\[${Color_Off}\] "
 
   # Is it bad?
   if [ $EXIT != 0 ]; then
