@@ -8,6 +8,7 @@ setup_symlinks() {
     .bashrc
     .bash_colors
     .profile
+    .vimrc
   )
 
   mkdir -p $olddir
