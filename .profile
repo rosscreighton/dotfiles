@@ -12,6 +12,7 @@ alias ol="cd ~/projects/outland"
 alias gitx="open -a gitx ./"
 alias vu="vagrant up"
 alias vs="vagrant ssh"
+alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
 
 
 ### PERMISSIONS
