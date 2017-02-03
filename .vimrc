@@ -3,7 +3,7 @@
 set nocompatible
 
 
-"  VIM-PLUG CONFIGURATION AND PLUGINS  
+" VIM-PLUG CONFIGURATION AND PLUGINS  
 " -----------------------------------------------------------
 
 " specify a directory for plugins
@@ -19,10 +19,10 @@ call plug#end()
 " CONFIGURE PLUGINS
 " -----------------------------------------------------------
 
-
 let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 set background=dark
+
 
 "  VIM SETTINGS 
 " -----------------------------------------------------------
