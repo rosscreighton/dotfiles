@@ -13,6 +13,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
+Plug 'junegunn/rainbow_parentheses.vim'
 
 " initialize plugin system
 call plug#end()
@@ -30,6 +31,14 @@ set background=dark
 let g:airline_theme='gruvbox'
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
+
+" rainbow parentheses
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
+
+augroup rainbow_parens
+  autocmd!
+  autocmd VimEnter * RainbowParentheses
+augroup END
 
  
 "  VIM SETTINGS
