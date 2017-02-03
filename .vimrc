@@ -11,6 +11,7 @@ call plug#begin('~/.vim/plugged')
 
 " specify plugins
 Plug 'morhetz/gruvbox'
+Plug 'ctrlpvim/ctrlp.vim'
 
 " initialize plugin system
 call plug#end()
