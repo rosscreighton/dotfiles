@@ -36,3 +36,10 @@ let g:airline#extensions#tabline#enabled = 1
 
 syntax on
 set number
+
+
+"  VIM SETTINGS 
+" -----------------------------------------------------------
+
+nmap <C-K> O<Esc>j
+nmap <C-J> o<Esc>k
