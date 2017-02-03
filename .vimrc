@@ -10,7 +10,7 @@ set nocompatible
 call plug#begin('~/.vim/plugged')
 
 " specify plugins
-Plug 'flazz/vim-colorschemes'
+Plug 'morhetz/gruvbox'
 
 " initialize plugin system
 call plug#end()
