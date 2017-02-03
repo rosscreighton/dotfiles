@@ -12,6 +12,7 @@ call plug#begin('~/.vim/plugged')
 " specify plugins
 Plug 'morhetz/gruvbox'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'vim-airline/vim-airline'
 
 " initialize plugin system
 call plug#end()
@@ -20,9 +21,14 @@ call plug#end()
 " CONFIGURE PLUGINS
 " -----------------------------------------------------------
 
+" colorscheme
 let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 set background=dark
+
+" airline
+let g:airline_theme='gruvbox'
+let g:airline#extensions#tabline#enabled = 1
 
 
 "  VIM SETTINGS 
