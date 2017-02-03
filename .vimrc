@@ -3,7 +3,7 @@
 set nocompatible
 
 
-" VIM-PLUG CONFIGURATION AND PLUGINS  
+" VIM-PLUG CONFIGURATION AND PLUGINS
 " -----------------------------------------------------------
 
 " specify a directory for plugins
@@ -29,16 +29,16 @@ set background=dark
 " airline
 let g:airline_theme='gruvbox'
 let g:airline#extensions#tabline#enabled = 1
+set laststatus=2
 
-
-"  VIM SETTINGS 
+"  VIM SETTINGS
 " -----------------------------------------------------------
 
 syntax on
 set number
 
 
-"  VIM SETTINGS 
+"  VIM SETTINGS
 " -----------------------------------------------------------
 
 nmap <C-K> O<Esc>j
