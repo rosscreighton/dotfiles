@@ -83,7 +83,7 @@ function parse_hg_branch {
 }
 
 function parse_jobs_count {
-  jobs | wc -l
+  jobs | wc -l | tr -d " "
 }
 
 function __prompt_command {
@@ -98,10 +98,10 @@ function __prompt_command {
 
   PS1+="\[${BYellow}\]\w \[${Cyan}\]$(parse_git_branch)$(parse_hg_branch)\[${Color_Off}\] "
 
-  if [ parse_jobs_count > 0 ]; then
+  if [ "$(parse_jobs_count)" != "0" ]; then
     PS1+="\[${Blue}\](\j)\[${Color_Off}\] "
   fi
-  
+
   # Is it bad?
   if [ $EXIT != 0 ]; then
     PS1+="\[${Red}\]→ $EXIT\[${Color_Off}\] "      # Add red if exit code non 0
