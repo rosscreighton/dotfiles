@@ -53,7 +53,17 @@ set number
 " KEY BINDINGS
 " -----------------------------------------------------------
 
+let mapleader = "\<Space>"
+
+nmap <leader>w :w<CR>
+nmap <leader>q :q<CR>
+" save and close
+nmap <leader>s :wq<CR>
 " insert new line above cursor w/o entering insert mode
-nmap <C-K> O<Esc>j
+nmap <leader>k O<Esc>j
 " insert new line below cursor w/o entering insert mode
-nmap <C-J> o<Esc>k
+nmap <leader>j o<Esc>k
+" open file with CtrlP in mixed mode
+nmap <leader>o :CtrlPMixed<CR>
+" jump to function def (tag) in current file
+nmap <leader>g :CtrlPTag<CR>
