@@ -52,7 +52,18 @@ let g:easytags_always_enabled = 1
 " -----------------------------------------------------------
 
 syntax on
+filetype plugin indent on
 set number
+set autoindent
+set smartindent
+set copyindent
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set preserveindent
+set cursorcolumn
+set cursorline
 
 
 " KEY BINDINGS
