@@ -82,19 +82,29 @@ function parse_hg_branch {
   hg branch 2> /dev/null | sed -e "s/\(.*\)/[\1]/"
 }
 
+function parse_jobs_count {
+  jobs | wc -l
+}
+
 function __prompt_command {
   local EXIT="$?" # must do this first
   PS1="\[${BPurple}\]\u\[${Color_Off}\]@"
+
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-      PS1+="\[${BRed}\]\h "
+    PS1+="\[${BRed}\]\h "
   else
-      PS1+="\[${BGreen}\]\h "
+    PS1+="\[${BGreen}\]\h "
   fi
+
   PS1+="\[${BYellow}\]\w \[${Cyan}\]$(parse_git_branch)$(parse_hg_branch)\[${Color_Off}\] "
 
+  if [ parse_jobs_count > 0 ]; then
+    PS1+="\[${Blue}\](\j)\[${Color_Off}\] "
+  fi
+  
   # Is it bad?
   if [ $EXIT != 0 ]; then
-      PS1+="\[${Red}\]→ $EXIT\[${Color_Off}\] "      # Add red if exit code non 0
+    PS1+="\[${Red}\]→ $EXIT\[${Color_Off}\] "      # Add red if exit code non 0
   fi
 
   PS1+="$ "
