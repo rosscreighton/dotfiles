@@ -50,7 +50,7 @@ syntax on
 set number
 
 
-"  VIM SETTINGS
+" KEY BINDINGS
 " -----------------------------------------------------------
 
 " insert new line above cursor w/o entering insert mode
