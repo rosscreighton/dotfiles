@@ -24,6 +24,7 @@ install_git_completion() {
 
 install_vim_plug() {
   if [[ ! -e ~/.vim/autoload/plug.vim ]]; then
+    echo "installing vim plug"
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   fi
 }
