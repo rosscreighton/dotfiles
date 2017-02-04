@@ -21,6 +21,8 @@ alias ol="cd ~/projects/outland"
 alias vu="vagrant up"
 alias vs="vagrant ssh"
 
+alias dots="cd ~/dotfiles/"
+
 
 ### PERMISSIONS
 #------------------------------------------------------------
