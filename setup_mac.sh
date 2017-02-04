@@ -9,6 +9,7 @@ install_brew_packages() {
 
   packages=(
     nvm
+    ctags
   )
 
   echo "installing homebrew packages"

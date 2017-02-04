@@ -16,6 +16,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'junegunn/rainbow_parentheses.vim'
 " automatically start ins-completion so we don't have to press <c-x>
 Plug 'vim-scripts/AutoComplPop' 
+Plug 'xolox/vim-misc' " required by easytags
+Plug 'xolox/vim-easytags' " auto generate tags file
 
 " initialize plugin system
 call plug#end()
@@ -42,8 +44,11 @@ augroup rainbow_parens
   autocmd VimEnter * RainbowParentheses
 augroup END
 
+" easytags
+let g:easytags_always_enabled = 1
+
  
-"  VIM SETTINGS
+" VIM SETTINGS
 " -----------------------------------------------------------
 
 syntax on
