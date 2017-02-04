@@ -30,10 +30,15 @@ install_vim_plug() {
   fi
 }
 
+setup_terminal() {
+  defaults write com.apple.Terminal AppleShowScrollBars -string WhenScrolling
+}
+
 main() {
   install_git_completion
   install_brew_packages
   install_vim_plug
+  setup_terminal
 }
 
 main
