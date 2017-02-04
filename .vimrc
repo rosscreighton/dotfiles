@@ -11,9 +11,11 @@ call plug#begin('~/.vim/plugged')
 
 " specify plugins
 Plug 'morhetz/gruvbox'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'vim-airline/vim-airline'
 Plug 'junegunn/rainbow_parentheses.vim'
+" automatically start ins-completion so we don't have to press <c-x>
+Plug 'vim-scripts/AutoComplPop' 
 
 " initialize plugin system
 call plug#end()
@@ -51,5 +53,7 @@ set number
 "  VIM SETTINGS
 " -----------------------------------------------------------
 
+" insert new line above cursor w/o entering insert mode
 nmap <C-K> O<Esc>j
+" insert new line below cursor w/o entering insert mode
 nmap <C-J> o<Esc>k
