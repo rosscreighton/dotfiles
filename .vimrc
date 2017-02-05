@@ -64,6 +64,9 @@ set expandtab
 set preserveindent
 set cursorcolumn
 set cursorline
+" remove trailing whitespace on save
+autocmd BufWritePre * %s/\s\+$//e
+
 
 
 " KEY BINDINGS
