@@ -5,6 +5,7 @@ setup_symlinks() {
   local olddir=~/dotfiles_old/${date}
   local files=(
     .gitconfig
+    .gitignore
     .bashrc
     .bash_colors
     .profile
