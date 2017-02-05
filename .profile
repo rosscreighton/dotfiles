@@ -16,6 +16,7 @@ alias .....="cd ../../../../"
 alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
 
 alias gitx="open -a gitx ./"
+alias chrome="open -a 'Google Chrome'"
 
 alias ol="cd ~/projects/outland"
 alias vu="vagrant up"
