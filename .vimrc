@@ -64,9 +64,13 @@ set expandtab
 set preserveindent
 set cursorcolumn
 set cursorline
+set incsearch
+set backspace=indent,eol,start
+set scrolloff=10
+set sidescrolloff=5
+set display+=lastline
 " remove trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
-
 
 
 " KEY BINDINGS
