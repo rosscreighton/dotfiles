@@ -15,7 +15,7 @@ Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'vim-airline/vim-airline'
 Plug 'junegunn/rainbow_parentheses.vim'
 " automatically start ins-completion so we don't have to press <c-x>
-Plug 'vim-scripts/AutoComplPop' 
+Plug 'vim-scripts/AutoComplPop'
 Plug 'xolox/vim-misc' " required by easytags
 Plug 'xolox/vim-easytags' " auto generate tags file
 
@@ -47,7 +47,7 @@ augroup END
 " easytags
 let g:easytags_always_enabled = 1
 
- 
+
 " VIM SETTINGS
 " -----------------------------------------------------------
 
@@ -82,7 +82,9 @@ nmap <leader>s :wq<CR>
 nmap <leader>k O<Esc>j
 " insert new line below cursor w/o entering insert mode
 nmap <leader>j o<Esc>k
+" insert spaces around cursor
+nmap <leader><Space> i<Space><Esc>la<Space><Esc>h
 " open file with CtrlP in mixed mode
-nmap <leader>o :CtrlPMixed<CR>
+nmap <leader>o :CtrlPCurWD<CR>
 " jump to function def (tag) in current file
-nmap <leader>g :CtrlPTag<CR>
+nmap <leader>g :CtrlPBufTagAll<CR>
