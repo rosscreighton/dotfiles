@@ -52,7 +52,9 @@ let g:easytags_always_enabled = 1
 " -----------------------------------------------------------
 
 syntax on
-filetype plugin indent on
+filetype plugin on
+filetype indent on
+filetype on
 set number
 set autoindent
 set smartindent
@@ -82,6 +84,8 @@ nmap <leader>w :w<CR>
 nmap <leader>q :q<CR>
 " save and close
 nmap <leader>s :wq<CR>
+" close current buffer
+nmap <leader>x :bd<CR>
 " insert new line above cursor w/o entering insert mode
 nmap <leader>k O<Esc>j
 " insert new line below cursor w/o entering insert mode
