@@ -2,7 +2,7 @@
 
 setup_symlinks() {
   local dir=~/dotfiles
-  local olddir=~/dotfiles_old/${date}
+  local olddir=~/dotfiles_old/$(date +"%m_%d_%Y")
   local files=(
     .gitconfig
     .gitignore
