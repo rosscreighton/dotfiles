@@ -18,6 +18,7 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'vim-scripts/AutoComplPop'
 Plug 'xolox/vim-misc' " required by easytags
 Plug 'xolox/vim-easytags' " auto generate tags file
+Plug 'yonchu/accelerated-smooth-scroll'
 
 " initialize plugin system
 call plug#end()
@@ -64,7 +65,7 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 set preserveindent
-set cursorcolumn
+" set cursorcolumn
 set cursorline
 set incsearch
 set backspace=indent,eol,start
