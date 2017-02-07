@@ -32,6 +32,9 @@ let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 set background=dark
 
+" CtrlP
+let g:ctrlp_open_new_file = 'r'
+
 " airline
 let g:airline_theme='gruvbox'
 let g:airline#extensions#tabline#enabled = 1
@@ -82,18 +85,21 @@ autocmd BufWritePre * %s/\s\+$//e
 let mapleader = "\<Space>"
 
 nmap <leader>w :w<CR>
-nmap <leader>q :q<CR>
 " save and close
-nmap <leader>s :wq<CR>
-" close current buffer
-nmap <leader>x :bd<CR>
+nmap <leader>q :wq<CR>
+" save and close current buffer
+nmap <leader>c :w<CR>:bd<CR>
 " insert new line above cursor w/o entering insert mode
 nmap <leader>k O<Esc>j
 " insert new line below cursor w/o entering insert mode
 nmap <leader>j o<Esc>k
 " insert spaces around cursor
 nmap <leader><Space> i<Space><Esc>la<Space><Esc>h
-" open file with CtrlP in mixed mode
+" open file with CtrlP
 nmap <leader>o :CtrlPCurWD<CR>
+" switch to buffer using CtrlP
+nmap <leader>s :CtrlPBuffer<CR>
+" switch to recently used file using CtrlP
+nmap <leader>r :CtrlPMRU<CR>
 " jump to function def (tag) in current file
 nmap <leader>g :CtrlPBufTagAll<CR>
