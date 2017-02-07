@@ -82,6 +82,10 @@ autocmd BufWritePre * %s/\s\+$//e
 " KEY BINDINGS
 " -----------------------------------------------------------
 
+fun! FindNextMatchingLine()
+    :exec '/' . getline('.')
+endfun
+
 let mapleader = "\<Space>"
 
 nmap <leader>w :w<CR>
@@ -103,3 +107,5 @@ nmap <leader>s :CtrlPBuffer<CR>
 nmap <leader>r :CtrlPMRU<CR>
 " jump to function def (tag) in current file
 nmap <leader>g :CtrlPBufTagAll<CR>
+" search for next occurence of line under cursor
+nmap <leader>nl :call FindNextMatchingLine()<CR>
