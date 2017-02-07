@@ -1372,6 +1372,8 @@
 	DYENhQ2MDZUNmg2nDaoNtw28DcQNxw3ZDdwN4QAAAAAAAAIBAAAAAAAAAC8AAAAAAAAA
 	AAAAAAAAAA3j
 	</data>
+	<key>CursorType</key>
+	<integer>2</integer>
 	<key>Font</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGGBlYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3AS
@@ -1635,6 +1637,8 @@
 	<true/>
 	<key>UseBrightBold</key>
 	<true/>
+	<key>WindowTitle</key>
+	<string></string>
 	<key>blackColour</key>
 	<data>
 	BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2JqZWN0AIWEAWMBhARm
