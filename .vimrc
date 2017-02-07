@@ -65,7 +65,7 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 set preserveindent
-" set cursorcolumn
+set cursorcolumn
 set cursorline
 set incsearch
 set backspace=indent,eol,start
