@@ -69,6 +69,7 @@ filetype plugin on
 filetype indent on
 filetype on
 set number
+set nowrap
 set autoindent
 set smartindent
 set copyindent
