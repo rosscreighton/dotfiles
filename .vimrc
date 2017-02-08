@@ -21,6 +21,7 @@ Plug 'xolox/vim-misc' " required by easytags
 Plug 'xolox/vim-easytags' " auto generate tags file
 Plug 'yonchu/accelerated-smooth-scroll'
 Plug 'lepture/vim-jinja'
+Plug 'scrooloose/nerdtree'
 
 " initialize plugin system
 call plug#end()
@@ -88,6 +89,10 @@ autocmd BufWritePre * %s/\s\+$//e
 " KEY MAPPINGS
 " -----------------------------------------------------------
 
+" next and previous buffers
+nmap <C-h> :bp<CR>
+nmap <C-l> :bn<CR>
+
 let mapleader = "\<Space>"
 
 nmap <leader>w :w<CR>
@@ -105,10 +110,6 @@ nmap <leader><Space> i<Space><Esc>la<Space><Esc>h
 nmap <leader>o :CtrlPCurWD<CR>
 " switch to buffer using CtrlP
 nmap <leader>s :CtrlPBuffer<CR>
-" next buffer
-nmap <leader>l :bn<CR>
-" previous buffer
-nmap <leader>h :bp<CR>
 " next entry in quickfix list
 nmap <leader>n :cn<CR>
 " previous entry in quickfix list
@@ -119,3 +120,11 @@ nmap <leader>r :CtrlPMRU<CR>
 nmap <leader>g :CtrlPBufTagAll<CR>
 " search for next occurence of line under cursor
 nmap <leader>nl :exec '/' . getline('.')<CR>
+" easy window traveral
+nmap <leader>j <C-w>j
+nmap <leader>k <C-w>k
+nmap <leader>h <C-w>h
+nmap <leader>l <C-w>l
+nmap <leader>x <C-w>q
+" toggle NERDTree
+nmap <leader>\ :NERDTreeToggle<CR>
