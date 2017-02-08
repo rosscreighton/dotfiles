@@ -10,6 +10,7 @@ set nocompatible
 call plug#begin('~/.vim/plugged')
 
 " specify plugins
+Plug 'embear/vim-localvimrc'
 Plug 'morhetz/gruvbox'
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'vim-airline/vim-airline'
@@ -19,6 +20,7 @@ Plug 'vim-scripts/AutoComplPop'
 Plug 'xolox/vim-misc' " required by easytags
 Plug 'xolox/vim-easytags' " auto generate tags file
 Plug 'yonchu/accelerated-smooth-scroll'
+Plug 'lepture/vim-jinja'
 
 " initialize plugin system
 call plug#end()
@@ -26,6 +28,10 @@ call plug#end()
 
 " CONFIGURE PLUGINS
 " -----------------------------------------------------------
+
+" localvimrc
+let g:localvimrc_name = '.localvimrc'
+let g:localvimrc_persistent = 1
 
 " colorscheme
 let g:gruvbox_contrast_dark='hard'
@@ -44,13 +50,13 @@ set laststatus=2
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 
 augroup rainbow_parens
-  autocmd!
-  autocmd VimEnter * RainbowParentheses
+    autocmd!
+    autocmd VimEnter * RainbowParentheses
 augroup END
 
 " easytags
 let g:easytags_always_enabled = 1
-
+let g:easytags_async = 1
 
 " VIM SETTINGS
 " -----------------------------------------------------------
@@ -72,19 +78,15 @@ set cursorcolumn
 set cursorline
 set incsearch
 set backspace=indent,eol,start
-set scrolloff=10
+set scrolloff=5
 set sidescrolloff=5
 set display+=lastline
 " remove trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
 
-" KEY BINDINGS
+" KEY MAPPINGS
 " -----------------------------------------------------------
-
-fun! FindNextMatchingLine()
-    :exec '/' . getline('.')
-endfun
 
 let mapleader = "\<Space>"
 
@@ -103,9 +105,17 @@ nmap <leader><Space> i<Space><Esc>la<Space><Esc>h
 nmap <leader>o :CtrlPCurWD<CR>
 " switch to buffer using CtrlP
 nmap <leader>s :CtrlPBuffer<CR>
+" next buffer
+nmap <leader>l :bn<CR>
+" previous buffer
+nmap <leader>h :bp<CR>
+" next entry in quickfix list
+nmap <leader>n :cn<CR>
+" previous entry in quickfix list
+nmap <leader>p :cp<CR>
 " switch to recently used file using CtrlP
 nmap <leader>r :CtrlPMRU<CR>
 " jump to function def (tag) in current file
 nmap <leader>g :CtrlPBufTagAll<CR>
 " search for next occurence of line under cursor
-nmap <leader>nl :call FindNextMatchingLine()<CR>
+nmap <leader>nl :exec '/' . getline('.')<CR>
