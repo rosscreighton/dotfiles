@@ -22,6 +22,8 @@ Plug 'xolox/vim-easytags' " auto generate tags file
 Plug 'yonchu/accelerated-smooth-scroll'
 Plug 'lepture/vim-jinja'
 Plug 'scrooloose/nerdtree'
+Plug 'groenewege/vim-less'
+Plug 'hail2u/vim-css3-syntax'
 
 " initialize plugin system
 call plug#end()
