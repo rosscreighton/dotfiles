@@ -25,6 +25,8 @@ Plug 'scrooloose/nerdtree'
 Plug 'groenewege/vim-less'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'vim-syntastic/syntastic'
+Plug 'jiangmiao/auto-pairs'
+Plug 'scrooloose/nerdcommenter'
 
 " initialize plugin system
 call plug#end()
