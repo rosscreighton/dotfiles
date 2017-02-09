@@ -8,8 +8,9 @@ install_brew_packages() {
   fi
 
   packages=(
-    nvm
     ctags
+    flake8
+    nvm
   )
 
   echo "installing homebrew packages"

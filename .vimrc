@@ -24,6 +24,7 @@ Plug 'lepture/vim-jinja'
 Plug 'scrooloose/nerdtree'
 Plug 'groenewege/vim-less'
 Plug 'hail2u/vim-css3-syntax'
+Plug 'vim-syntastic/syntastic'
 
 " initialize plugin system
 call plug#end()
