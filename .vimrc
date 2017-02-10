@@ -61,7 +61,6 @@ augroup rainbow_parens
 augroup END
 
 " easytags
-let g:easytags_always_enabled = 1
 let g:easytags_async = 1
 
 " VIM SETTINGS
