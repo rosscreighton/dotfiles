@@ -11,6 +11,7 @@ install_brew_packages() {
     ctags
     flake8
     nvm
+    tmux
   )
 
   echo "installing homebrew packages"
