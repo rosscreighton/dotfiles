@@ -87,6 +87,7 @@ set backspace=indent,eol,start
 set scrolloff=5
 set sidescrolloff=5
 set display+=lastline
+set undofile
 " remove trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
@@ -105,6 +106,8 @@ nmap <leader>w :w<CR>
 nmap <leader>q :wq<CR>
 " save and close current buffer
 nmap <leader>c :w<CR>:bd<CR>
+" close current buffer
+nmap <leader>b :bd<CR>
 " insert new line above cursor w/o entering insert mode
 nmap <leader>lk O<Esc>j
 " insert new line below cursor w/o entering insert mode
@@ -115,14 +118,14 @@ nmap <leader><Space> i<Space><Esc>la<Space><Esc>h
 nmap <leader>o :CtrlPCurWD<CR>
 " switch to buffer using CtrlP
 nmap <leader>s :CtrlPBuffer<CR>
+" switch to recently used file using CtrlP
+nmap <leader>r :CtrlPMRU<CR>
+" go to function def (tag) in current file
+nmap <leader>g :CtrlPBufTagAll<CR>
 " next entry in quickfix list
 nmap <leader>n :cn<CR>
 " previous entry in quickfix list
 nmap <leader>p :cp<CR>
-" switch to recently used file using CtrlP
-nmap <leader>r :CtrlPMRU<CR>
-" jump to function def (tag) in current file
-nmap <leader>g :CtrlPBufTagAll<CR>
 " search for next occurence of line under cursor
 nmap <leader>nl :exec '/' . getline('.')<CR>
 " easy window traveral
