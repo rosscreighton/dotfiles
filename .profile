@@ -4,6 +4,7 @@
 export HISTCONTROL=ignoreboth:erasedups
 export CLICOLOR=1
 export TERM=xterm-256color
+export EDITOR='vim'
 
 
 ## ALIASES
@@ -22,6 +23,7 @@ alias chrome="open -a 'Google Chrome'"
 alias ol="cd ~/projects/outland"
 alias vu="vagrant up"
 alias vs="vagrant ssh"
+alias ol-start="tmuxinator start outland"
 
 alias dots="cd ~/dotfiles/"
 

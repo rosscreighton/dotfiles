@@ -18,6 +18,15 @@ install_brew_packages() {
   brew update && brew install -y ${packages[@]}
 }
 
+install_gems() {
+  gems=(
+    tmuxinator
+  )
+
+  echo "installing gems"
+  gem install ${gems}
+}
+
 install_git_completion() {
   if [[ ! -e ~/.git-completion.bash ]]; then
     echo "downloading git auto-completion script"
@@ -39,6 +48,7 @@ setup_terminal() {
 main() {
   install_git_completion
   install_brew_packages
+  install_gems
   install_vim_plug
   setup_terminal
 }
