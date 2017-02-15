@@ -88,6 +88,7 @@ set scrolloff=5
 set sidescrolloff=5
 set display+=lastline
 set undofile
+set undodir=~/.vim/undo
 " remove trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
