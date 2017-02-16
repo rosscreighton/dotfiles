@@ -12,6 +12,7 @@ install_brew_packages() {
     flake8
     nvm
     tmux
+    vim
   )
 
   echo "installing homebrew packages"
