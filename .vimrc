@@ -46,6 +46,7 @@ set background=dark
 
 " CtrlP
 let g:ctrlp_open_new_file = 'r'
+let g:ctrlp_custom_ignore = '\.pyc'
 
 " airline
 let g:airline_theme='gruvbox'
