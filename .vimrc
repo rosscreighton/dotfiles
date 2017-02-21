@@ -110,6 +110,8 @@ nmap <leader>q :wq<CR>
 nmap <leader>c :w<CR>:bd<CR>
 " close current buffer
 nmap <leader>b :bd<CR>
+" close all buffers
+nmap <leader>ba :bufdo bd<CR>
 " insert new line above cursor w/o entering insert mode
 nmap <leader>lk O<Esc>j
 " insert new line below cursor w/o entering insert mode
