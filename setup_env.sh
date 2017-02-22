@@ -9,6 +9,7 @@ setup_symlinks() {
     .bashrc
     .bash_colors
     .profile
+    .tmux.conf
     .vimrc
   )
 
