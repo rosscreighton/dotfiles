@@ -113,9 +113,9 @@ nmap <leader>b :bd<CR>
 " close all buffers
 nmap <leader>ba :bufdo bd<CR>
 " insert new line above cursor w/o entering insert mode
-nmap <leader>lk O<Esc>j
+nmap <leader>ik O<Esc>j
 " insert new line below cursor w/o entering insert mode
-nmap <leader>lj o<Esc>k
+nmap <leader>ij o<Esc>k
 " insert spaces around cursor
 nmap <leader><Space> i<Space><Esc>la<Space><Esc>h
 " open file with CtrlP
