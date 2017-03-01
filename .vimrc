@@ -27,6 +27,7 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'vim-syntastic/syntastic'
 Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
+Plug 'majutsushi/tagbar'
 
 " initialize plugin system
 call plug#end()
@@ -140,3 +141,5 @@ nmap <leader>l <C-w>l
 nmap <leader>x <C-w>q
 " toggle NERDTree
 nmap <leader>\ :NERDTreeToggle<CR>
+" toggle Tagbar
+nmap <leader>/ :TagbarToggle<CR>
