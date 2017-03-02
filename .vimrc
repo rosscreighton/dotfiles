@@ -65,6 +65,10 @@ augroup END
 " easytags
 let g:easytags_async = 1
 
+"autopairs
+let g:AutoPairsMapCh = 0
+
+
 " VIM SETTINGS
 " -----------------------------------------------------------
 
@@ -139,6 +143,11 @@ nmap <leader>k <C-w>k
 nmap <leader>h <C-w>h
 nmap <leader>l <C-w>l
 nmap <leader>x <C-w>q
+" text traversal while in insert mode
+imap <C-g> <C-o>h
+imap <C-j> <C-o>j
+imap <C-k> <C-o>k
+imap <C-l> <C-o>l
 " toggle NERDTree
 nmap <leader>\ :NERDTreeToggle<CR>
 " toggle Tagbar
