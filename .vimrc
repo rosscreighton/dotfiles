@@ -144,10 +144,10 @@ nmap <leader>h <C-w>h
 nmap <leader>l <C-w>l
 nmap <leader>x <C-w>q
 " text traversal while in insert mode
-imap <C-g> <C-o>h
-imap <C-j> <C-o>j
-imap <C-k> <C-o>k
-imap <C-l> <C-o>l
+imap <C-g> <Left>
+imap <C-j> <Down>
+imap <C-k> <Up>
+imap <C-l> <Right>
 " toggle NERDTree
 nmap <leader>\ :NERDTreeToggle<CR>
 " toggle Tagbar
