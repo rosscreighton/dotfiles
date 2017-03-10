@@ -103,8 +103,8 @@ autocmd BufWritePre * %s/\s\+$//e
 " -----------------------------------------------------------
 
 " next and previous buffers
-nmap <C-h> :bp<CR>
-nmap <C-l> :bn<CR>
+nmap <C-h> :bp!<CR>
+nmap <C-l> :bn!<CR>
 
 let mapleader = "\<Space>"
 
