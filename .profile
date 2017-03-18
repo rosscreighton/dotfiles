@@ -94,7 +94,7 @@ function parse_virtualenv {
   VENV=""
 
   if [[ $VIRTUAL_ENV != "" ]]; then
-    VENV+="${VIRTUAL_ENV##*/} "
+    VENV+="<${VIRTUAL_ENV##*/}>"
   fi
 
   echo $VENV
@@ -111,7 +111,10 @@ function __prompt_command {
   fi
 
   PS1+="\[${BYellow}\]\w \[${Cyan}\]$(parse_git_branch)$(parse_hg_branch)\[${Color_Off}\] "
-  PS1+="\[${BBlue}\]$(parse_virtualenv)\[${Color_Off}\]"
+
+  if [ "$(parse_virtualenv)" != "" ]; then
+    PS1+="\[${BBlue}\]$(parse_virtualenv)\[${Color_Off}\] "
+  fi
 
   if [ "$(parse_jobs_count)" != "0" ]; then
     PS1+="\[${White}\](\j)\[${Color_Off}\] "
