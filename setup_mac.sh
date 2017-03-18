@@ -11,6 +11,8 @@ install_brew_packages() {
     ctags
     flake8
     nvm
+    pyenv
+    pyenv-virtualenv
     tmux
     vim
   )

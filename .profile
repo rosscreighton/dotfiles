@@ -52,6 +52,12 @@ alias dots="cd ~/dotfiles/"
 umask 002
 
 
+### SET UP PYENV
+#------------------------------------------------------------
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+
 ### SOURCING
 #------------------------------------------------------------
 
