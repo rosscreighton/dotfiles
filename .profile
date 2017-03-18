@@ -90,6 +90,16 @@ function parse_jobs_count {
   jobs | wc -l | tr -d " "
 }
 
+function parse_virtualenv {
+  VENV=""
+
+  if [[ $VIRTUAL_ENV != "" ]]; then
+    VENV+="${VIRTUAL_ENV##*/} "
+  fi
+
+  echo $VENV
+}
+
 function __prompt_command {
   local EXIT="$?" # must do this first
   PS1="\[${BPurple}\]\u\[${Color_Off}\]@"
@@ -101,9 +111,10 @@ function __prompt_command {
   fi
 
   PS1+="\[${BYellow}\]\w \[${Cyan}\]$(parse_git_branch)$(parse_hg_branch)\[${Color_Off}\] "
+  PS1+="\[${BBlue}\]$(parse_virtualenv)\[${Color_Off}\]"
 
   if [ "$(parse_jobs_count)" != "0" ]; then
-    PS1+="\[${Blue}\](\j)\[${Color_Off}\] "
+    PS1+="\[${White}\](\j)\[${Color_Off}\] "
   fi
 
   # Is it bad?
