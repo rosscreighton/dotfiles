@@ -25,6 +25,8 @@ alias vu="vagrant up"
 alias vs="vagrant ssh"
 alias ol-start="tmuxinator start outland"
 
+alias cm="cd ~/projects/crumb/crumb-api/"
+
 alias dots="cd ~/dotfiles/"
 
 
@@ -131,7 +133,7 @@ function __prompt_command {
     PS1+="\[${Red}\]→ $EXIT\[${Color_Off}\] "      # Add red if exit code non 0
   fi
 
-  PS1+="$ "
+  PS1+="\n$ "
 }
 
 export PROMPT_COMMAND=__prompt_command
