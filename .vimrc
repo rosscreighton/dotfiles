@@ -19,7 +19,6 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'vim-scripts/AutoComplPop'
 Plug 'xolox/vim-misc' " required by easytags
 Plug 'xolox/vim-easytags' " auto generate tags file
-Plug 'yonchu/accelerated-smooth-scroll'
 Plug 'lepture/vim-jinja'
 Plug 'scrooloose/nerdtree'
 Plug 'groenewege/vim-less'
