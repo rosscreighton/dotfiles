@@ -66,9 +66,11 @@ augroup END
 " easytags
 let g:easytags_async = 1
 
-"autopairs
+" autopairs
 let g:AutoPairsMapCh = 0
 
+" NERDTree
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 
 " VIM SETTINGS
 " -----------------------------------------------------------
