@@ -13,6 +13,7 @@ install_brew_packages() {
     nvm
     pyenv
     pyenv-virtualenv
+    reattach-to-user-namespace
     tmux
     vim
   )
