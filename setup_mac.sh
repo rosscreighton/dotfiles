@@ -17,6 +17,7 @@ install_brew_packages() {
     tmux
     vim
     watchman
+    yarn
   )
 
   echo "installing homebrew packages"
