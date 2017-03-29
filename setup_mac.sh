@@ -16,6 +16,7 @@ install_brew_packages() {
     reattach-to-user-namespace
     tmux
     vim
+    watchman
   )
 
   echo "installing homebrew packages"
