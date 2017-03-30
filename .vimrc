@@ -14,19 +14,20 @@ Plug 'embear/vim-localvimrc'
 Plug 'morhetz/gruvbox'
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'vim-airline/vim-airline'
-Plug 'junegunn/rainbow_parentheses.vim'
-" automatically start ins-completion so we don't have to press <c-x>
-Plug 'vim-scripts/AutoComplPop'
+Plug 'Valloric/YouCompleteMe'
 Plug 'xolox/vim-misc' " required by easytags
 Plug 'xolox/vim-easytags' " auto generate tags file
-Plug 'lepture/vim-jinja'
 Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/nerdcommenter'
+Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'lepture/vim-jinja'
 Plug 'groenewege/vim-less'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'vim-syntastic/syntastic'
-Plug 'jiangmiao/auto-pairs'
-Plug 'scrooloose/nerdcommenter'
-Plug 'majutsushi/tagbar'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 
 " initialize plugin system
 call plug#end()

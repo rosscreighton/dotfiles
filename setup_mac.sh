@@ -8,6 +8,7 @@ install_brew_packages() {
   fi
 
   packages=(
+    cmake
     ctags
     flake8
     nvm
