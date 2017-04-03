@@ -48,6 +48,10 @@ install_vim_plug() {
   fi
 }
 
+install_yarn_packages() {
+  yarn global add eslint eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y eslint-config-airbnb
+}
+
 setup_terminal() {
   defaults write com.apple.Terminal AppleShowScrollBars -string WhenScrolling
 }

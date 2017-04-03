@@ -72,6 +72,12 @@ let g:AutoPairsMapCh = 0
 " NERDTree
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 
+" Syntastic
+let g:syntastic_javascript_checkers = ['eslint']
+
+" vim-jsx
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+
 " VIM SETTINGS
 " -----------------------------------------------------------
 
