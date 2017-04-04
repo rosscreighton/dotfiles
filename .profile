@@ -25,7 +25,8 @@ alias vu="vagrant up"
 alias vs="vagrant ssh"
 alias ol-start="tmuxinator start outland"
 
-alias cm="cd ~/projects/crumb/crumb-api/"
+alias cma="cd ~/projects/crumb/crumb-api/"
+alias cmi="cd ~/projects/crumb/crumb-ios/"
 
 alias dots="cd ~/dotfiles/"
 
