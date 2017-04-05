@@ -27,6 +27,8 @@ alias ol-start="tmuxinator start outland"
 
 alias cma="cd ~/projects/crumb/crumb-api/"
 alias cmi="cd ~/projects/crumb/crumb-ios/"
+alias cma-start="tmuxinator start crumb-api"
+alias cmi-start="tmuxinator start crumb-ios"
 
 alias dots="cd ~/dotfiles/"
 
