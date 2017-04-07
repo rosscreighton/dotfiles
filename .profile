@@ -19,6 +19,7 @@ alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resour
 
 alias gitx="open -a gitx ./"
 alias chrome="open -a 'Google Chrome'"
+alias finder="open -a 'Finder'"
 
 alias ol="cd ~/projects/outland"
 alias vu="vagrant up"
