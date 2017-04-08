@@ -20,9 +20,9 @@ alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resour
 alias gitx="open -a gitx ./"
 alias chrome="open -a 'Google Chrome'"
 alias finder="open -a 'Finder'"
-alias dkr-stop="docker stop $(docker ps -aq)"
-alias dkr-rm="docker rm $(docker ps -aq)"
-alias dkr-rmi="docker rmi $(docker images -q)"
+alias dkr-stop='docker stop $(docker ps -aq)'
+alias dkr-rm='docker rm $(docker ps -aq)'
+alias dkr-rmi='docker rmi $(docker images -q)'
 
 alias ol="cd ~/projects/outland"
 alias vu="vagrant up"
@@ -33,6 +33,8 @@ alias cma="cd ~/projects/crumb/crumb-api/"
 alias cmi="cd ~/projects/crumb/crumb-ios/"
 alias cma-start="cma && tmuxinator local"
 alias cmi-start="cmi && tmuxinator local"
+alias cma-stop="tmux kill-session -t crumb-api"
+alias cmi-stop="tmux kill-session -t crumb-ios"
 
 alias dots="cd ~/dotfiles/"
 
