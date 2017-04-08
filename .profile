@@ -82,12 +82,12 @@ if [[ -e ~/.git-completion.bash ]]; then
   . ~/.git-completion.bash
 fi
 
-# set up nvm
-export NVM_DIR="$HOME/.nvm"
+# set up nvm - disabled for now
+#export NVM_DIR="$HOME/.nvm"
 
-if which brew &> /dev/null; then
-  . $(brew --prefix nvm)/nvm.sh
-fi
+#if which brew &> /dev/null; then
+  #. $(brew --prefix nvm)/nvm.sh
+#fi
 
 
 ### CUSTOM COMMAND PROMPT
