@@ -28,6 +28,7 @@ install_brew_packages() {
 install_gems() {
   gems=(
     tmuxinator
+    bundler
   )
 
   echo "installing gems"
