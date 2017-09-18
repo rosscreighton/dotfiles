@@ -38,7 +38,9 @@ alias cmi-stop="tmux kill-session -t crumb-ios"
 
 alias mister="cd ~/projects/mister"
 alias mister-server-start="mister && cd server && tmuxinator local"
-alias mister-server-stop="tmux kill-session -t mister"
+alias mister-server-stop="tmux kill-session -t mister-server"
+alias mister-client-start="mister && cd client && tmuxinator local"
+alias mister-client-stop="tmux kill-session -t mister-client"
 
 alias dots="cd ~/dotfiles/"
 
