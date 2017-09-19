@@ -41,6 +41,8 @@ alias mister-server-start="mister && cd server && tmuxinator local"
 alias mister-server-stop="tmux kill-session -t mister-server"
 alias mister-client-start="mister && cd client && tmuxinator local"
 alias mister-client-stop="tmux kill-session -t mister-client"
+alias mister-start="mister-server-start && mister-client-start"
+alias mister-stop="mister-server-stop && mister-client-stop"
 
 alias dots="cd ~/dotfiles/"
 
