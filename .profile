@@ -44,6 +44,10 @@ alias mister-client-stop="tmux kill-session -t mister-client"
 alias mister-start="mister-server-start && mister-client-start"
 alias mister-stop="mister-server-stop && mister-client-stop"
 
+alias soc="cd ~/projects/social/apps/trainer"
+alias soc-start="soc && tmuxinator local"
+alias soc-stop="tmux kill-session -t social-trainer"
+
 alias dots="cd ~/dotfiles/"
 
 
