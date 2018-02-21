@@ -45,8 +45,20 @@ alias mister-start="mister-server-start && mister-client-start"
 alias mister-stop="mister-server-stop && mister-client-stop"
 
 alias soc="cd ~/projects/social/apps/trainer"
-alias soc-start="soc && tmuxinator local"
-alias soc-stop="tmux kill-session -t social-trainer"
+alias soc-start-client="soc && cd client && tmuxinator local"
+alias soc-stop-client="tmux kill-session -t social-client"
+alias soc-start-backend="soc && tmuxinator local"
+alias soc-stop-backend="tmux kill-session -t social-backend"
+alias soc-start="soc-start-client && soc-start-backend"
+alias soc-stop="soc-stop-client && soc-stop-backend"
+
+alias fam="cd ~/projects/fam"
+alias fam-start="fam && tmuxinator local"
+alias fam-stop="tmux kill-session -t fam"
+
+alias savvy="cd ~/projects/savvy"
+alias savvy-start="savvy && tmuxinator local"
+alias savvy-stop="tmux kill-session -t savvy"
 
 alias dots="cd ~/dotfiles/"
 
