@@ -29,21 +29,6 @@ alias vu="vagrant up"
 alias vs="vagrant ssh"
 alias ol-start="tmuxinator start outland"
 
-alias cma="cd ~/projects/crumb/crumb-api/"
-alias cmi="cd ~/projects/crumb/crumb-ios/"
-alias cma-start="cma && tmuxinator local"
-alias cmi-start="cmi && tmuxinator local"
-alias cma-stop="tmux kill-session -t crumb-api"
-alias cmi-stop="tmux kill-session -t crumb-ios"
-
-alias mister="cd ~/projects/mister"
-alias mister-server-start="mister && cd server && tmuxinator local"
-alias mister-server-stop="tmux kill-session -t mister-server"
-alias mister-client-start="mister && cd client && tmuxinator local"
-alias mister-client-stop="tmux kill-session -t mister-client"
-alias mister-start="mister-server-start && mister-client-start"
-alias mister-stop="mister-server-stop && mister-client-stop"
-
 alias soc="cd ~/projects/social/apps/trainer"
 alias soc-start-client="soc && cd client && tmuxinator local"
 alias soc-stop-client="tmux kill-session -t social-client"
@@ -52,13 +37,7 @@ alias soc-stop-backend="tmux kill-session -t social-backend"
 alias soc-start="soc-start-client && soc-start-backend"
 alias soc-stop="soc-stop-client && soc-stop-backend"
 
-alias fam="cd ~/projects/fam"
-alias fam-start="fam && tmuxinator local"
-alias fam-stop="tmux kill-session -t fam"
-
-alias savvy="cd ~/projects/savvy"
-alias savvy-start="savvy && tmuxinator local"
-alias savvy-stop="tmux kill-session -t savvy"
+alias gush="cd ~/projects/gush"
 
 alias dots="cd ~/dotfiles/"
 
