@@ -1,6 +1,6 @@
 [user]
-  name = ross creighton
-  email = rosson.creighton@gmail.com
+	name = ross creighton
+	email = rosson.creighton@gmail.com
 [difftool]
   prompt = false
 [color]
@@ -23,4 +23,12 @@
   default = current
 [core]
   editor = 'vim'
-  excludesfile = ~/.gitignore
+	excludesfile = /Users/rosscreighton/.gitignore
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/rosscreighton/.stCommitMsg

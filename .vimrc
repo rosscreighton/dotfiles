@@ -78,9 +78,13 @@ let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exe = './node_modules/.bin/eslint -f compat'
 
-
 " vim-jsx
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+
+" YouCompleteMe
+let g:ycm_server_keep_logfiles = 1
+let g:ycm_server_log_level = 'debug'
+"let g:ycm_path_to_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python2.7'
 
 " VIM SETTINGS
 " -----------------------------------------------------------

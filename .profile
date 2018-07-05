@@ -37,7 +37,9 @@ alias soc-stop-backend="tmux kill-session -t social-backend"
 alias soc-start="soc-start-client && soc-start-backend"
 alias soc-stop="soc-stop-client && soc-stop-backend"
 
-alias gush="cd ~/projects/gush"
+alias gush="cd ~/projects/gush/gush"
+alias gush-start="gush && tmuxinator local"
+alias gush-stop="tmux kill-session -t gush"
 
 alias dots="cd ~/dotfiles/"
 
