@@ -82,6 +82,9 @@ let g:syntastic_javascript_eslint_exe = './node_modules/.bin/eslint -f compat'
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " YouCompleteMe
+" YCM requires python installation compiled with framework support.
+" here's how to install that with pyenv:
+" PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install 3.6.4
 let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
 "let g:ycm_path_to_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python2.7'
