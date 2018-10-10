@@ -49,6 +49,10 @@ install_vim_plug() {
   fi
 }
 
+setup_vim_undo() {
+  mkdir -p ~/.vim/undo
+}
+
 install_yarn_packages() {
   yarn global add eslint eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y eslint-config-airbnb
 }
@@ -62,6 +66,7 @@ main() {
   install_brew_packages
   install_gems
   install_vim_plug
+  setup_vim_undo
   setup_terminal
 }
 
