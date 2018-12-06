@@ -43,6 +43,12 @@ alias gush-stop="tmux kill-session -t gush"
 
 alias dots="cd ~/dotfiles/"
 
+# clean branches local
+alias git-cbl="git co master && git branch --merged | grep -v '\*\|master\|develop' | xargs -n 1 git branch -d"
+# clean branches remote
+alias git-cbr="git co master && git branch -r --merged | grep -v '\*\|master\|develop' | sed 's/origin\///' | xargs -n 1 git push --delete origin"
+
+
 
 ### PERMISSIONS
 #------------------------------------------------------------

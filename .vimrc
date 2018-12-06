@@ -87,7 +87,9 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 " PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install 3.6.4
 let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
-"let g:ycm_path_to_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python2.7'
+"let g:ycm_path_to_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python'
+"let g:ycm_server_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python'
+let g:ycm_server_python_interpreter = '~/.pyenv/versions/3.6.4'
 
 " VIM SETTINGS
 " -----------------------------------------------------------
@@ -172,3 +174,10 @@ imap <C-l> <Right>
 nmap <leader>\ :NERDTreeToggle<CR>
 " toggle Tagbar
 nmap <leader>/ :TagbarToggle<CR>
+
+
+" MACROS
+" -----------------------------------------------------------
+
+" insert ipdb debugger
+let@d = 'Oimport ipdb; ipdb.set_trace() w'
