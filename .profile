@@ -24,19 +24,6 @@ alias dkr-stop='docker stop $(docker ps -aq)'
 alias dkr-rm='docker rm $(docker ps -aq)'
 alias dkr-rmi='docker rmi $(docker images -q)'
 
-alias ol="cd ~/projects/outland"
-alias vu="vagrant up"
-alias vs="vagrant ssh"
-alias ol-start="tmuxinator start outland"
-
-alias soc="cd ~/projects/social/apps/trainer"
-alias soc-start-client="soc && cd client && tmuxinator local"
-alias soc-stop-client="tmux kill-session -t social-client"
-alias soc-start-backend="soc && tmuxinator local"
-alias soc-stop-backend="tmux kill-session -t social-backend"
-alias soc-start="soc-start-client && soc-start-backend"
-alias soc-stop="soc-stop-client && soc-stop-backend"
-
 alias gush="cd ~/projects/gush/gush"
 alias gush-start="gush && tmuxinator local"
 alias gush-stop="tmux kill-session -t gush"
