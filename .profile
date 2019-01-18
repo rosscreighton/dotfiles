@@ -19,6 +19,7 @@ alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resour
 
 alias gitx="open -a gitx ./"
 alias chrome="open -a 'Google Chrome'"
+alias brave="open -a 'Brave Browser'"
 alias finder="open -a 'Finder'"
 alias dkr-stop='docker stop $(docker ps -aq)'
 alias dkr-rm='docker rm $(docker ps -aq)'
