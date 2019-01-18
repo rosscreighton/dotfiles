@@ -5,6 +5,8 @@ export HISTCONTROL=ignoreboth:erasedups
 export CLICOLOR=1
 export TERM=xterm-256color
 export EDITOR='vim'
+export AWS_PROFILE=gush_owner
+export AWS_DEFAULT_REGION=us-east-1
 
 
 ## ALIASES
