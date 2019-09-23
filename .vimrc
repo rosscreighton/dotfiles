@@ -30,6 +30,10 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'digitaltoad/vim-pug'
+Plug 'leafgarland/typescript-vim'
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+Plug 'junegunn/vim-easy-align'
+Plug 'psf/black'
 
 " initialize plugin system
 call plug#end()
@@ -92,6 +96,10 @@ let g:ycm_server_log_level = 'debug'
 "let g:ycm_path_to_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python'
 "let g:ycm_server_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python'
 "let g:ycm_server_python_interpreter = '~/.pyenv/versions/3.6.4'
+
+"Prettier
+"let g:prettier#autoformat = 0
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
 
 " VIM SETTINGS
 " -----------------------------------------------------------
