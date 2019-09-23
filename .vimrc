@@ -91,7 +91,7 @@ let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
 "let g:ycm_path_to_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python'
 "let g:ycm_server_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python'
-let g:ycm_server_python_interpreter = '~/.pyenv/versions/3.6.4'
+"let g:ycm_server_python_interpreter = '~/.pyenv/versions/3.6.4'
 
 " VIM SETTINGS
 " -----------------------------------------------------------
