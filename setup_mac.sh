@@ -10,7 +10,6 @@ install_brew_packages() {
   packages=(
     cmake
     ctags
-    flake8
     nvm
     pyenv
     pyenv-virtualenv
@@ -18,7 +17,6 @@ install_brew_packages() {
     tmux
     vim
     watchman
-    yarn
   )
 
   echo "installing homebrew packages"
@@ -51,10 +49,6 @@ install_vim_plug() {
 
 setup_vim_undo() {
   mkdir -p ~/.vim/undo
-}
-
-install_yarn_packages() {
-  yarn global add eslint eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y eslint-config-airbnb
 }
 
 setup_terminal() {
