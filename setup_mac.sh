@@ -20,7 +20,7 @@ install_brew_packages() {
   )
 
   echo "installing homebrew packages"
-  brew update && brew install -y ${packages[@]}
+  brew update && brew install ${packages[@]}
 }
 
 install_gems() {
