@@ -10,7 +10,6 @@ install_brew_packages() {
   packages=(
     cmake
     ctags
-    nvm
     pyenv
     pyenv-virtualenv
     reattach-to-user-namespace
@@ -53,6 +52,11 @@ setup_vim_undo() {
 
 setup_terminal() {
   defaults write com.apple.Terminal AppleShowScrollBars -string WhenScrolling
+}
+
+install_nvm() {
+  echo "installing nvm"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
 }
 
 main() {

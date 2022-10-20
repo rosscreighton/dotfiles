@@ -1,15 +1,15 @@
-" must do this first
-" allow vim to break compatibility with vi
+" Must do this first
+" Allow vim to break compatibility with vi
 set nocompatible
 
 
 " VIM-PLUG CONFIGURATION AND PLUGINS
 " -----------------------------------------------------------
 
-" specify a directory for plugins
+" Specify a directory for plugins
 call plug#begin('~/.vim/plugged')
 
-" specify plugins
+" Specify plugins
 Plug 'embear/vim-localvimrc'
 Plug 'morhetz/gruvbox'
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
@@ -23,6 +23,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'vim-syntastic/syntastic'
+Plug 'vim-scripts/syntastic-python-pyflakes'
 Plug 'mtscout6/syntastic-local-eslint.vim'
 Plug 'lepture/vim-jinja'
 Plug 'groenewege/vim-less'
@@ -33,20 +34,21 @@ Plug 'digitaltoad/vim-pug'
 Plug 'leafgarland/typescript-vim'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'junegunn/vim-easy-align'
-Plug 'psf/black'
+Plug 'psf/black', { 'branch': 'stable' }
 
-" initialize plugin system
+
+" Initialize plugin system
 call plug#end()
 
 
 " CONFIGURE PLUGINS
 " -----------------------------------------------------------
 
-" localvimrc
+" Localvimrc
 let g:localvimrc_name = '.localvimrc'
 let g:localvimrc_persistent = 1
 
-" colorscheme
+" Colorscheme
 let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 set background=dark
@@ -56,12 +58,12 @@ let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_custom_ignore = '\.pyc\|node_modules\|DS_Store\|git'
 let g:ctrlp_show_hidden = 1
 
-" airline
+" Airline
 let g:airline_theme='gruvbox'
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
 
-" rainbow parentheses
+" Rainbow parentheses
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 
 augroup rainbow_parens
@@ -69,10 +71,10 @@ augroup rainbow_parens
     autocmd VimEnter * RainbowParentheses
 augroup END
 
-" easytags
+" Easytags
 let g:easytags_async = 1
 
-" autopairs
+" Autopairs
 let g:AutoPairsMapCh = 0
 
 " NERDTree
@@ -81,6 +83,7 @@ let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 " Syntastic
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exe = './node_modules/.bin/eslint -f compat'
+let g:syntastic_python_checkers = ["pyflakes"]
 
 " vim-jsx
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
@@ -91,8 +94,8 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 " PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install 3.6.4
 " sometimes this command fails because zlib is unavailable. if so, try:
 " sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
-let g:ycm_server_keep_logfiles = 1
-let g:ycm_server_log_level = 'debug'
+"let g:ycm_server_keep_logfiles = 1
+"let g:ycm_server_log_level = 'debug'
 "let g:ycm_path_to_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python'
 "let g:ycm_server_python_interpreter = '/Users/rosscreighton/.pyenv/shims/python'
 "let g:ycm_server_python_interpreter = '~/.pyenv/versions/3.6.4'
@@ -100,6 +103,10 @@ let g:ycm_server_log_level = 'debug'
 "Prettier
 "let g:prettier#autoformat = 0
 "autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
+
+"Black
+autocmd BufWritePre *.py execute ':Black'
+
 
 " VIM SETTINGS
 " -----------------------------------------------------------
@@ -127,67 +134,66 @@ set sidescrolloff=5
 set display+=lastline
 set undofile
 set undodir=~/.vim/undo
-" remove trailing whitespace on save
+" Remove trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
 
 " KEY MAPPINGS
 " -----------------------------------------------------------
 
-" next and previous buffers
+" Next and previous buffers
 nmap <C-h> :bp!<CR>
 nmap <C-l> :bn!<CR>
 
 let mapleader = "\<Space>"
 
 nmap <leader>w :w<CR>
-" save and close
+" Save and close
 nmap <leader>q :wq<CR>
-" save and close current buffer
+" Save and close current buffer
 nmap <leader>c :w<CR>:bd<CR>
-" close current buffer
+" Close current buffer
 nmap <leader>b :bd<CR>
-" close all buffers
+" Close all buffers
 nmap <leader>ba :bufdo bd<CR>
-" insert new line above cursor w/o entering insert mode
+" Insert new line above cursor w/o entering insert mode
 nmap <leader>ik O<Esc>j
-" insert new line below cursor w/o entering insert mode
+" Insert new line below cursor w/o entering insert mode
 nmap <leader>ij o<Esc>k
-" insert spaces around cursor
+" Insert spaces around cursor
 nmap <leader><Space> i<Space><Esc>la<Space><Esc>h
-" open file with CtrlP
+" Open file with CtrlP
 nmap <leader>o :CtrlPCurWD<CR>
-" switch to buffer using CtrlP
+" Switch to buffer using CtrlP
 nmap <leader>s :CtrlPBuffer<CR>
-" switch to recently used file using CtrlP
+" Switch to recently used file using CtrlP
 nmap <leader>r :CtrlPMRU<CR>
-" go to function def (tag) in current file
+" Go to function def (tag) in current file
 nmap <leader>g :CtrlPBufTagAll<CR>
-" next entry in quickfix list
+" Next entry in quickfix list
 nmap <leader>n :cn<CR>
-" previous entry in quickfix list
+" Previous entry in quickfix list
 nmap <leader>p :cp<CR>
-" search for next occurence of line under cursor
+" Search for next occurence of line under cursor
 nmap <leader>nl :exec '/' . getline('.')<CR>
-" easy window traveral
+" Easy window traveral
 nmap <leader>j <C-w>j
 nmap <leader>k <C-w>k
 nmap <leader>h <C-w>h
 nmap <leader>l <C-w>l
 nmap <leader>x <C-w>q
-" text traversal while in insert mode
+" Text traversal while in insert mode
 imap <C-g> <Left>
 imap <C-j> <Down>
 imap <C-k> <Up>
 imap <C-l> <Right>
-" toggle NERDTree
+" Toggle NERDTree
 nmap <leader>\ :NERDTreeToggle<CR>
-" toggle Tagbar
+" Toggle Tagbar
 nmap <leader>/ :TagbarToggle<CR>
-
-
-" MACROS
-" -----------------------------------------------------------
-
-" insert ipdb debugger
-let@d = 'Oimport ipdb; ipdb.set_trace() w'
+" Insert ipdb debugger
+nmap <leader>d Oimport ipdb; ipdb.set_trace() :w<CR>
+" Wrap each line in quotes and follow with comma. Intended use: prepare lines
+" in a text file for copy and paste into a list of strings in a scripting
+" language.
+nmap <leader>] :%s/^/"/<CR>:%s/$/",/<CR>:w<CR>

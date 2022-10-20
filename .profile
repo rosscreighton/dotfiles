@@ -31,6 +31,18 @@ alias gush="cd ~/projects/gush/gush"
 alias gush-start="gush && tmuxinator local"
 alias gush-stop="tmux kill-session -t gush"
 
+alias portal="cd ~/projects/fws/portal"
+alias portal-start="portal && tmuxinator local"
+alias portal-stop="tmux kill-session -t portal"
+
+alias helix="cd ~/projects/fws/helix2"
+alias helix-start="helix && tmuxinator local"
+alias helix-stop="tmux kill-session -t helix"
+
+alias ft="cd ~/projects/fantasy_toolbox"
+alias ft-start="ft && tmuxinator local"
+alias ft-stop="tmux kill-session -t fantasy_toolbox"
+
 alias dots="cd ~/dotfiles/"
 
 # clean branches local
@@ -66,6 +78,7 @@ umask 002
 
 ### SET UP PYENV
 #------------------------------------------------------------
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
@@ -73,6 +86,7 @@ eval "$(pyenv virtualenv-init -)"
 ### SET UP RBENV
 #------------------------------------------------------------
 eval "$(rbenv init -)"
+export RBENV_VERSION=3.1.0
 
 
 ### SOURCING
@@ -90,12 +104,9 @@ if [[ -e ~/.git-completion.bash ]]; then
   . ~/.git-completion.bash
 fi
 
-# set up nvm - disabled for now
-#export NVM_DIR="$HOME/.nvm"
-
-#if which brew &> /dev/null; then
-  #. $(brew --prefix nvm)/nvm.sh
-#fi
+# set up nvm
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 
 ### CUSTOM COMMAND PROMPT
