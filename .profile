@@ -9,6 +9,11 @@ export AWS_PROFILE=gush_owner
 export AWS_DEFAULT_REGION=us-east-1
 
 
+### HOMEBREW SETUP
+#------------------------------------------------------------
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+
 ## ALIASES
 #------------------------------------------------------------
 
@@ -55,6 +60,8 @@ alias git-cbr="git co master && git branch -r --merged | grep -v '\*\|master\|de
 ### PERMISSIONS
 #------------------------------------------------------------
 
+  # DISABLED. Left here for reference.
+  #
   # why do we change the default umask?
   #
   # the goal is to have multiple accounts on a dev machine,
@@ -72,8 +79,9 @@ alias git-cbr="git co master && git branch -r --merged | grep -v '\*\|master\|de
   # owner of the homebrew dir. see ./setup_homebrew_permissions
   # for details. groups cannot have write permissions by default,
   # so in order for ./setup_homebrew_permissions.sh to work, we
-  # must change the user's default umask to 002.
-umask 002
+  # must change the user's default umask to 002:
+
+# umask 002
 
 
 ### SET UP PYENV
@@ -86,7 +94,7 @@ eval "$(pyenv virtualenv-init -)"
 ### SET UP RBENV
 #------------------------------------------------------------
 eval "$(rbenv init -)"
-export RBENV_VERSION=3.1.0
+export RBENV_VERSION=3.3.0
 
 
 ### SOURCING
@@ -94,19 +102,15 @@ export RBENV_VERSION=3.1.0
 
 . ~/.bash_colors
 
-# gets virtualenvwrapper working in vagrant box
-if [[ -e $(which virtualenvwrapper.sh) ]]; then
-  . $(which virtualenvwrapper.sh)
-fi
-
 # enable git tab completion
 if [[ -e ~/.git-completion.bash ]]; then
   . ~/.git-completion.bash
 fi
 
 # set up nvm
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
 ### CUSTOM COMMAND PROMPT

@@ -22,19 +22,15 @@ Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'vim-syntastic/syntastic'
-Plug 'vim-scripts/syntastic-python-pyflakes'
-Plug 'mtscout6/syntastic-local-eslint.vim'
 Plug 'lepture/vim-jinja'
 Plug 'groenewege/vim-less'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'digitaltoad/vim-pug'
 Plug 'leafgarland/typescript-vim'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'junegunn/vim-easy-align'
-Plug 'psf/black', { 'branch': 'stable' }
+Plug 'dense-analysis/ale'
 
 
 " Initialize plugin system
@@ -80,15 +76,32 @@ let g:AutoPairsMapCh = 0
 " NERDTree
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 
-" Syntastic
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exe = './node_modules/.bin/eslint -f compat'
-let g:syntastic_python_checkers = ["pyflakes"]
+" ALE (Asynchronous Lint Engine)
+let g:ale_linters = {'python': ['pyflakes']}
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'python': ['black'],
+      \}
+
 
 " vim-jsx
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " YouCompleteMe
+"
+" New mac installation settings:
+let g:ycm_python_interpreter_path = ''
+let g:ycm_python_sys_path = []
+let g:ycm_extra_conf_vim_data = [
+  \  'g:ycm_python_interpreter_path',
+  \  'g:ycm_python_sys_path'
+  \]
+let g:ycm_global_ycm_extra_conf = '~/dotfiles/ycm_global_extra_conf.py'
+let g:ycm_add_preview_to_completeopt="popup"
+
+" YCM settings from old mac:
+"
 " YCM requires python installation compiled with framework support.
 " here's how to install that with pyenv:
 " PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install 3.6.4
@@ -103,9 +116,6 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 "Prettier
 "let g:prettier#autoformat = 0
 "autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
-
-"Black
-autocmd BufWritePre *.py execute ':Black'
 
 
 " VIM SETTINGS
@@ -134,8 +144,6 @@ set sidescrolloff=5
 set display+=lastline
 set undofile
 set undodir=~/.vim/undo
-" Remove trailing whitespace on save
-autocmd BufWritePre * %s/\s\+$//e
 
 
 " KEY MAPPINGS
