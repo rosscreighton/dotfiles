@@ -5,7 +5,6 @@ export HISTCONTROL=ignoreboth:erasedups
 export CLICOLOR=1
 export TERM=xterm-256color
 export EDITOR='vim'
-export AWS_PROFILE=gush_owner
 export AWS_DEFAULT_REGION=us-east-1
 
 
@@ -47,6 +46,10 @@ alias helix-stop="tmux kill-session -t helix"
 alias ft="cd ~/projects/fantasy_toolbox"
 alias ft-start="ft && tmuxinator local"
 alias ft-stop="tmux kill-session -t fantasy_toolbox"
+
+alias rtyl-lnd="cd ~/projects/arterial/landing-page"
+alias rtyl-lnd-start="rtyl-lnd && tmuxinator local"
+alias rtyl-lnd-stop="tmux kill-session -t rtyl_landingPage"
 
 alias dots="cd ~/dotfiles/"
 
