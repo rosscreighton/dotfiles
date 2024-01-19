@@ -49,7 +49,7 @@ alias ft-stop="tmux kill-session -t fantasy_toolbox"
 
 alias rtyl-lnd="cd ~/projects/arterial/landing-page"
 alias rtyl-lnd-start="rtyl-lnd && tmuxinator local"
-alias rtyl-lnd-stop="tmux kill-session -t rtyl_landingPage"
+alias rtyl-lnd-stop="tmux kill-session -t arterial_landingPage"
 
 alias dots="cd ~/dotfiles/"
 
