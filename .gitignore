@@ -1,8 +1,12 @@
 *.swp
 *.swo
 *.swn
+*.swl
+*.swm
 .DS_Store
 __pycache__
 *.pyc
 node_modules
 .sass-cache/*
+scratch/*
+.tmuxinator.yml

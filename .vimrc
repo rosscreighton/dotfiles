@@ -31,6 +31,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'junegunn/vim-easy-align'
 Plug 'dense-analysis/ale'
+Plug 'mechatroner/rainbow_csv'
 
 
 " Initialize plugin system

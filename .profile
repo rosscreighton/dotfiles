@@ -31,6 +31,10 @@ alias dkr-stop='docker stop $(docker ps -aq)'
 alias dkr-rm='docker rm $(docker ps -aq)'
 alias dkr-rmi='docker rmi $(docker images -q)'
 
+alias td="cd ~/todos/"
+alias tdup="td && tmuxinator local"
+alias tddown="tmux kill-session -t todos"
+
 alias gush="cd ~/projects/gush/gush"
 alias gush-start="gush && tmuxinator local"
 alias gush-stop="tmux kill-session -t gush"
@@ -43,6 +47,10 @@ alias helix="cd ~/projects/fws/helix2"
 alias helix-start="helix && tmuxinator local"
 alias helix-stop="tmux kill-session -t helix"
 
+alias fwswm="cd ~/projects/fws/fws-windmill"
+alias fwswm-start="fwswm && tmuxinator local"
+alias fwswm-stop="tmux kill-session -t fwswm"
+
 alias ft="cd ~/projects/fantasy_toolbox"
 alias ft-start="ft && tmuxinator local"
 alias ft-stop="tmux kill-session -t fantasy_toolbox"
@@ -50,6 +58,14 @@ alias ft-stop="tmux kill-session -t fantasy_toolbox"
 alias rtyl-lnd="cd ~/projects/arterial/landing-page"
 alias rtyl-lnd-start="rtyl-lnd && tmuxinator local"
 alias rtyl-lnd-stop="tmux kill-session -t arterial_landingPage"
+
+alias renovo="cd ~/projects/renovo/safelum_back_office_v0"
+alias renovo-start="renovo && tmuxinator local"
+alias renovo-stop="tmux kill-session -t safelum_back_office_v0"
+
+alias ccil="cd ~/projects/arterial/ccil"
+alias ccil-start="ccil && tmuxinator local"
+alias ccil-stop="tmux kill-session -t ccil"
 
 alias dots="cd ~/dotfiles/"
 
@@ -98,6 +114,12 @@ eval "$(pyenv virtualenv-init -)"
 #------------------------------------------------------------
 eval "$(rbenv init -)"
 export RBENV_VERSION=3.3.0
+
+
+### SnowSQL Setup
+#------------------------------------------------------------
+
+alias snowsql=/Applications/SnowSQL.app/Contents/MacOS/snowsql
 
 
 ### SOURCING
@@ -170,3 +192,6 @@ function __prompt_command {
 }
 
 export PROMPT_COMMAND=__prompt_command
+
+# added by Snowflake SnowSQL installer v1.2
+export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH

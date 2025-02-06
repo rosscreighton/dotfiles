@@ -16,7 +16,7 @@
   rh = reset --hard
   rs = reset --soft
   d = difftool
-  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr, %cn)%Creset' --abbrev-commit --date=relative
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci, %cn)%Creset' --abbrev-commit
 [push]
   default = current
 [pull]
