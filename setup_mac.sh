@@ -25,8 +25,9 @@ install_brew_packages() {
     rbenv
     ruby-build
     tmux
-    vim
     watchman
+    neovim
+    font-jetbrains-mono-nerd-font
   )
 
   echo "Installing Homebrew packages"
@@ -55,21 +56,11 @@ install_git_completion() {
   fi
 }
 
-install_vim_plug() {
-  if [[ ! -e ~/.vim/autoload/plug.vim ]]; then
-    echo "Installing vim plug"
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  fi
-}
-
-setup_vim_undo() {
-  echo "Setting up vim undo"
-  mkdir -p ~/.vim/undo
-}
-
 setup_terminal() {
   echo "Applying terminal settings"
   defaults write com.apple.Terminal AppleShowScrollBars -string WhenScrolling
+  # Nerd Font: JetBrains Mono font, no ligatures, monospaced
+  defaults write com.apple.Terminal "NSFont" -string "JetBrainsMonoNLNFM-Regular 16"
 }
 
 install_nvm() {
@@ -98,19 +89,6 @@ install_python() {
   pip install black
 }
 
-install_vim_plugins() {
-  echo "Installing vim plugins"
-  vim +'PlugInstall --sync' +qa
-
-  echo "Running YouCompleteMe install script"
-  pushd ~/.vim/plugged/YouCompleteMe
-  echo $(python --version)
-  echo "^^ Make sure this is the python version you expect. It should be the global version installed by pyenv."
-  read -p "Press enter to continue."
-  python ./install.py --ts-completer
-  popd
-}
-
 install_gitx() {
   # Git GUI
   echo "Installing Gitx"
@@ -124,13 +102,10 @@ main() {
   install_brew_packages
   install_ruby
   install_gems
-  install_vim_plug
-  setup_vim_undo
   setup_terminal
   install_nvm
   install_docker
   install_python
-  install_vim_plugins
   install_gitx
 }
 
