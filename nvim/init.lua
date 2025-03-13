@@ -68,9 +68,12 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
---[[ Setup lazy.nvim ]]
+--[[ Install & Configure plugins ]]
 
 local plugins = {
+  { -- Turn off search highlights when you're done searching (similar to manually typing :noh
+    'romainl/vim-cool',
+  },
   { -- Colorscheme
     'sainnhe/gruvbox-material', 
     priority = 1000,
@@ -85,18 +88,24 @@ local plugins = {
     'echasnovski/mini.icons',
     version = '*',
     config = function()
-      miniIcons = require("mini.icons")
+      local miniIcons = require("mini.icons")
       miniIcons.setup()
-      -- bufferline needs `get_icon_by_filetype` behavior from 'nvim-web-devicons'
-      miniIcons.mock_nvim_web_devicons()
     end
   },
   { -- Syntax highlighting
     "nvim-treesitter/nvim-treesitter", 
+    event = { "BufReadPre", "BufNewFile" }, 
     build = ":TSUpdate",
+    dependencies = {
+      "windwp/nvim-ts-autotag", 
+    },
     config = function()
-      local treeSitterConfigs = require("nvim-treesitter.configs")
+      local treeSitterConfigs = require("nvim-treesitter.configs") -- Autoclose frontend tags (html, jsx, etc.)
       treeSitterConfigs.setup({
+        sync_install = false,
+        highlight = { enable = true },
+        indent = { enable = true },  
+        autotag = { enable = true }, -- Autoclose frontend tags (html, jsx, etc.)
         ensure_installed = {
           "bash", 
           "css",
@@ -105,6 +114,8 @@ local plugins = {
           "git_rebase",
           "gitcommit",
           "gitignore",
+          "graphql",
+          "helm",
           "html",
           "html", 
           "javascript", 
@@ -114,24 +125,26 @@ local plugins = {
           "python", 
           "sql", 
           "terraform",
+          "tmux",
           "typescript", 
           "vim", 
           "vimdoc"
         },
-        sync_install = false,
-        highlight = { enable = true },
-        indent = { enable = true },  
       })
     end
   },
   { -- Fuzzy finder
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    dependencies = { 
+      'nvim-lua/plenary.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    },
     config = function()
       require("telescope").setup(
-	{
+        {
           defaults = {
+            path_display = { "smart" },
             mappings = {
 	            i = {
                 ["<C-j>"] = "move_selection_next",
@@ -142,14 +155,20 @@ local plugins = {
               "node_modules/",
               ".git/",
               "__pycache__/"
+            },
+            pickers = {
+              buffers = { sort_mru = true},
+              oldfiles = { sort_mru = true}
             }
-	  }
+          }
         }
       )
       local telescopeBuiltins = require("telescope.builtin")
-      vim.keymap.set("n", "<leader>o", telescopeBuiltins.find_files, {})
-      vim.keymap.set("n", "<leader>s", telescopeBuiltins.buffers, {})
-      vim.keymap.set("n", "<leader>r", telescopeBuiltins.oldfiles, {})
+      vim.keymap.set("n", "<leader>o", telescopeBuiltins.find_files, {}) -- Fuzzy open file
+      vim.keymap.set("n", "<leader>s", telescopeBuiltins.buffers, {}) -- Switch buffers
+      vim.keymap.set("n", "<leader>r", telescopeBuiltins.oldfiles, {}) -- Switch recent files
+      vim.keymap.set("n", "<leader>gl", telescopeBuiltins.live_grep, {}) -- Live grep input string in cwd
+      vim.keymap.set("n", "<leader>gu", telescopeBuiltins.grep_string, {}) -- Grep string under cursor in cwd
     end
   },
   { -- File explorer
@@ -188,7 +207,9 @@ local plugins = {
           show_buffer_close_icons = false,
           get_element_icon = function(element)
             -- element consists of {filetype: string, path: string, extension: string, directory: string}
-            miniIcons = require("mini.icons")
+            local miniIcons = require("mini.icons")
+            -- bufferline needs `get_icon_by_filetype` behavior from 'nvim-web-devicons'
+            miniIcons.mock_nvim_web_devicons()
             local icon, hl = miniIcons.get("filetype", element.filetype)
             return icon, hl
           end,
@@ -199,15 +220,163 @@ local plugins = {
   { -- Status line
     'nvim-lualine/lualine.nvim',
     config = function()
+      local colors = {
+        bgLightGray = '#504945',
+        textWhite    = '#ddc7a1',
+        bgMedGray = '#32302f',
+      }
+
+      local custom_theme = {
+        normal = {
+          a = { fg = colors.textWhite, bg = colors.bgLightGray },
+          b = { fg = colors.textWhite, bg = colors.bgMedGray },
+          c = { fg = colors.textWhite, bg = colors.bgMedGray },
+        },
+      }
+
+      local function get_lsp_client_names()
+        local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+        if #clients == 0 then return "No LSP" end
+        local client_names = {}
+        for _, client in ipairs(clients) do
+          table.insert(client_names, client.name)
+        end
+        return table.concat(client_names, ",")
+      end
+
+      local function get_file_location_and_progress()
+          local line = vim.fn.line('.')
+          local col = vim.fn.col('.')
+          local total_lines = vim.fn.line('$')
+          return string.format('%d/%d : %d', line, total_lines, col)
+      end
+
       require("lualine").setup({
+        options = {
+          theme = custom_theme,
+          component_separators = '',
+        },
         sections = {
-          lualine_a = {'branch'},
-          lualine_b = {'diff'},
-          lualine_c = {'filename'},
-          lualine_x = {'encoding', 'fileformat', 'filetype'},
-          lualine_y = {'progress'},
-          lualine_z = {'location'}  
+          lualine_a = {
+            {
+              'filename', 
+              path = 3,  -- Show full absolute path
+              file_status = false,
+            }
+          },
+          lualine_b = {'branch'},
+          lualine_c = {'diff'},
+          lualine_x = {'filetype'},
+          lualine_y = { 
+            { get_lsp_client_names, icons_enabled = false},
+          },
+          lualine_z = { 
+            { 'mode' },
+            { get_file_location_and_progress }
+          }
         }
+      })
+    end
+  },
+  { -- Install language severs, linters, fixers
+    "williamboman/mason.nvim",
+    dependencies = { 
+        "neovim/nvim-lspconfig",
+        "williamboman/mason-lspconfig.nvim",
+    },
+    config = function()
+      require("mason").setup()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "bashls",
+          "tailwindcss",
+          "jinja_lsp",
+          "docker_compose_language_service",
+          "dockerls",
+          "graphql",
+          "superhtml",
+          "ts_ls", -- TypeScript & JS
+          "cssls",
+          "lua_ls",
+          "jsonls",
+          "remark_ls", -- Markdown
+          "nginx_language_server",
+          "vacuum", -- OpenAPI
+          "pyright", -- Python
+          "ruff", -- Python linter & formatter
+          "ruby_lsp",
+          "rust_analyzer",
+          "sqlls",
+          "svelte",
+          "terraformls",
+          "lemminx", -- XML
+        }
+      })
+    end
+  },
+  { -- Autocompletion
+    'saghen/blink.cmp',
+    dependencies = 'rafamadriz/friendly-snippets', -- provides snippets based on file type
+    version = '*',
+    config = function()
+      require("blink.cmp").setup({
+        fuzzy = { implementation = "rust" },
+        appearance = {
+          nerd_font_variant = 'mono'
+        },
+        signature = { enabled = true },
+        keymap = {
+          -- See docs for rest of keymaps:
+          -- https://cmp.saghen.dev/configuration/keymap.html
+          preset = 'super-tab',
+          ['<C-c>'] = { 'hide', 'fallback' }, -- Close completion
+          ['<C-k>'] = { 'select_prev', 'fallback_to_mappings' },
+          ['<C-j>'] = { 'select_next', 'fallback_to_mappings' },
+          ['<C-s>'] = { 'show_signature', 'hide_signature', 'fallback' }, -- Show/hide signature when autocompleting a funtion call
+        }
+      })
+    end
+  }, 
+  { -- LSP configuration
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" }, 
+    config = function()
+      local blink_lsp_capabilities = require('blink.cmp').get_lsp_capabilities()
+      require("mason-lspconfig").setup_handlers({
+        -- Auto configure each language server installed by Mason
+        
+        -- The first entry (without a key) is the default handler and will be called for
+        -- each installed server that doesn't have a dedicated handler.
+        function (server_name) -- default handler (optional)
+            require("lspconfig")[server_name].setup({ 
+             -- Inform the langauge server of the autocompletion capabilities we have via blink
+              capabilities = blink_lsp_capabilities
+            })
+        end,
+
+        --[[ 
+        We can also provide a dedicated handler for specific servers. For example, a 
+        handler override for the `rust_analyzer`: 
+
+        ["rust_analyzer"] = function ()
+          require("rust-tools").setup({})
+        end
+
+        ]]
+        ["lua_ls"] = function ()
+          require("lspconfig")["lua_ls"].setup({
+            capabilities = blink_lsp_capabilities,
+            settings = {
+              Lua = {
+                diagnostics = {
+                  -- Make it the language server doesn't think the the global variable `vim`
+                  -- is an error when working neovim config in init.lua
+                  globals = { "vim" }
+                }
+              }
+            }
+          }) 
+        end
       })
     end
   }

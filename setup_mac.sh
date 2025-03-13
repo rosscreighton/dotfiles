@@ -28,10 +28,15 @@ install_brew_packages() {
     watchman
     neovim
     font-jetbrains-mono-nerd-font
+    ripgrep # Required for neovim telescope live_grep and grep_string
   )
 
   echo "Installing Homebrew packages"
   brew update && brew install ${packages[@]}
+}
+
+install_rust() {
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 }
 
 install_ruby() {
@@ -100,6 +105,7 @@ main() {
   install_command_line_tools
   install_git_completion
   install_brew_packages
+  install_rust
   install_ruby
   install_gems
   setup_terminal
