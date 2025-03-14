@@ -19,6 +19,16 @@ vim.o.scrolloff = 5
 vim.o.sidescrolloff = 5
 vim.o.display = vim.o.display .. ",lastline"
 vim.o.termguicolors = true
+vim.o.undofile = true -- Enable persistent undo
+vim.opt.undodir = vim.fn.expand("~/.config/nvim/undodir")
+vim.opt.undolevels = 1000
+vim.opt.undoreload = 10000
+--[[
+Synchronizes the unnamed register (which is used for basic yank, delete, and put 
+operations) with the system clipboard. Yanks/deletes in nvim will be copied to
+system clipboard. Pasting nvim using the p command will paste from system
+clipboard. ]]
+vim.opt.clipboard = "unnamedplus"
 
 --[[ Key mappings for builtin vim stuff ]]
 
@@ -67,9 +77,47 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+--[[ Customize diagnostics ]]
+
+-- Customize diagnostic signs in the sign column
+
+local signs = { Error = "", Warn = "", Hint = "󰋗", Info = "" }
+for type, icon in pairs(signs) do
+	local hl = "DiagnosticSign" .. type
+	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
+-- Customize diagnostic virtual text displayed to the right of code lines in the buffer
+vim.diagnostic.config({
+	virtual_text = {
+		source = "always",
+		prefix = "",
+	},
+	severity_sort = true,
+	float = {
+		source = "always", -- Or "if_many"
+	},
+})
+
+-- Keymap to turn diagnostics on and off globally
+local function toggle_diagnostics()
+	if vim.diagnostic.is_enabled(nil) then
+		vim.diagnostic.disable()
+	else
+		vim.diagnostic.enable()
+	end
+end
+
+vim.keymap.set("n", "<leader>td", toggle_diagnostics, { desc = "Toggle diagnostics" })
+
+--[[ Global variables used across plugins ]]
+
+vim.g.nvim_lint_enabled = true
+vim.g.conform_formatting_enabled = true
+
 --[[ Install & Configure plugins ]]
 
-local plugins = {
+LazyPlugins = {
 	{ -- Turn off search highlights when you're done searching (similar to manually typing :noh
 		"romainl/vim-cool",
 	},
@@ -232,18 +280,29 @@ local plugins = {
 				},
 			}
 
+			local get_diagnostics_status = function()
+				if vim.diagnostic.is_enabled(nil) then
+					return ""
+				else
+					return "󰜺"
+				end
+			end
 			local get_linters = function()
 				local linters = require("lint")._resolve_linter_by_ft(vim.bo.filetype)
-				if #linters == 0 then
-					return "⚠"
+				if not vim.g.nvim_lint_enabled then
+					return "󰜺"
+				elseif #linters == 0 then
+					return ""
 				end
 				return table.concat(linters, ", ")
 			end
 
 			local function get_formatters()
 				local formatters = require("conform").list_formatters_for_buffer(0)
-				if #formatters == 0 then
-					return "⚠"
+				if not vim.g.conform_formatting_enabled then
+					return "󰜺"
+				elseif #formatters == 0 then
+					return ""
 				else
 					return table.concat(formatters, ",")
 				end
@@ -252,7 +311,7 @@ local plugins = {
 			local function get_lsp_client_names()
 				local clients = vim.lsp.get_active_clients({ bufnr = 0 })
 				if #clients == 0 then
-					return "⚠"
+					return ""
 				end
 				local client_names = {}
 				for _, client in ipairs(clients) do
@@ -277,7 +336,7 @@ local plugins = {
 					lualine_a = {
 						{
 							"filename",
-							path = 3, -- Show full path from home dir
+							path = 1, -- Show full path from home dir
 							file_status = false,
 						},
 					},
@@ -290,9 +349,9 @@ local plugins = {
 						{ get_lsp_client_names, icon = "LSP:" },
 						{ get_formatters, icon = "FMT:" },
 						{ get_linters, icon = "LNT:" },
+						{ get_diagnostics_status, icon = "DXG:" },
 					},
 					lualine_z = {
-						{ "mode" },
 						{ get_file_location_and_progress },
 					},
 				},
@@ -386,15 +445,27 @@ local plugins = {
 					-- Fallback on the LSP for formatting if no formatter is available
 					lsp_format = "fallback",
 				},
-				format_on_save = {
-					lsp_format = "fallback",
-					timeout_ms = 500, -- How long to block for formatting
-				},
+				format_on_save = function()
+					if vim.g.conform_formatting_enabled then
+						return {
+							timeout_ms = 500, -- How long to block for formatting
+							lsp_format = "fallback",
+						}
+					else
+						return
+					end
+				end,
 				-- Set the log level. Use `:ConformInfo` to see the location of the log file.
 				log_level = vim.log.levels.ERROR,
 				-- Conform will notify  when a formatter errors
 				notify_on_error = true,
 			})
+
+			local function toggle_formatting()
+				vim.g.conform_formatting_enabled = not vim.g.conform_formatting_enabled
+			end
+
+			vim.keymap.set("n", "<leader>tf", toggle_formatting, {})
 		end,
 	},
 	{ -- Linting
@@ -415,11 +486,28 @@ local plugins = {
 				typescriptreact = { "eslint_d" },
 			}
 
+			local function toggle_linting()
+				vim.g.nvim_lint_enabled = not vim.g.nvim_lint_enabled
+				if vim.g.nvim_lint_enabled then
+					require("lint").try_lint()
+				else
+					local linter_name = lint._resolve_linter_by_ft(vim.bo.filetype)[1]
+					if linter_name then
+						local linter_namespace = lint.get_namespace(linter_name)
+						vim.diagnostic.reset(linter_namespace)
+					end
+				end
+			end
+
 			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 				callback = function()
-					lint.try_lint()
+					if vim.g.nvim_lint_enabled then
+						lint.try_lint()
+					end
 				end,
 			})
+
+			vim.keymap.set("n", "<leader>tl", toggle_linting, {})
 		end,
 	},
 	{ -- Autocompletion
@@ -474,6 +562,8 @@ local plugins = {
         end
 
         ]]
+
+				["ruff"] = function() end, -- Disable ruff as a language server. (We use as linter/formatter)
 				["lua_ls"] = function()
 					require("lspconfig")["lua_ls"].setup({
 						capabilities = blink_lsp_capabilities,
@@ -504,10 +594,44 @@ local plugins = {
 					})
 				end,
 			})
+
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+				callback = function(ev)
+					-- Buffer local mappings.
+					-- See `:help vim.lsp.*` for documentation on any of the below functions
+					local opts = { buffer = ev.buf, silent = true }
+
+					-- set keybinds
+					opts.desc = "Show documentation for what is under cursor"
+					vim.keymap.set("n", "gk", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+
+					opts.desc = "Show LSP definitions"
+					vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+
+					opts.desc = "Go to declaration"
+					vim.keymap.set("n", "gv", vim.lsp.buf.declaration, opts) -- go to declaration
+
+					opts.desc = "Show LSP references"
+					vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+
+					opts.desc = "Show LSP Iplementations"
+					vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+
+					opts.desc = "Show LSP type definitions"
+					vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+
+					opts.desc = "Show diagnostics for current line in popup"
+					vim.keymap.set("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+
+					opts.desc = "Smart rename"
+					vim.keymap.set("n", "<leader>mvs", vim.lsp.buf.rename, opts) -- smart rename
+				end,
+			})
 		end,
 	},
 }
 
-local opts = {}
+LazyOpts = {}
 
-require("lazy").setup(plugins, opts)
+require("lazy").setup(LazyPlugins, LazyOpts)
