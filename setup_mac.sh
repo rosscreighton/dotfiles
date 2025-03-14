@@ -9,7 +9,7 @@ install_command_line_tools() {
 }
 
 install_brew_packages() {
-  if ! which brew 2> /dev/null > /dev/null; then
+  if ! which brew 2>/dev/null >/dev/null; then
     echo "Installing Homebrew"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -32,7 +32,7 @@ install_brew_packages() {
   )
 
   echo "Installing Homebrew packages"
-  brew update && brew install ${packages[@]}
+  brew update && brew install "${packages[@]}"
 }
 
 install_rust() {
@@ -51,7 +51,7 @@ install_gems() {
   )
 
   echo "Installing gems"
-  gem install ${gems}
+  gem install "${gems[@]}"
 }
 
 install_git_completion() {
@@ -73,7 +73,7 @@ install_nvm() {
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
 }
 
-install_nvm() {
+install_node() {
   echo "Installing node and npm"
   nvm install --lts
 }
@@ -100,8 +100,14 @@ install_gitx() {
   brew install --cask gitx
 }
 
+install_ghostty() {
+  echo "Installing ghostty"
+  brew install --cask ghostty
+}
+
 main() {
   set_default_shell_to_bash
+  install_ghostty
   install_command_line_tools
   install_git_completion
   install_brew_packages
@@ -110,6 +116,7 @@ main() {
   install_gems
   setup_terminal
   install_nvm
+  install_node
   install_docker
   install_python
   install_gitx

@@ -25,7 +25,7 @@ setup_nvim_config_symlinks() {
   # Create the config dir
   mkdir -p ~/.config/
   pushd ~/.config/
-    mkdir -p nvim
+  mkdir -p nvim
   popd
 
   local nvimConfigDir=~/.config/nvim/
@@ -48,11 +48,39 @@ setup_nvim_config_symlinks() {
   done
 }
 
+setup_ghostty_config_symlinks() {
+  # Create the config dir
+  mkdir -p ~/.config/
+  pushd ~/.config/
+  mkdir -p ghostty
+  popd
+
+  local ghosttyConfigDir=~/.config/ghostty/
+  local ghosttyDotfilesDir=~/dotfiles/ghostty
+
+  # Create a dir to house the old config files that may have already
+  # existed in the config dir
+  local oldDir=~/dotfiles_old/$(date +"%m_%d_%Y")/ghostty
+  mkdir -p $oldDir
+
+  # For each ghostty config file
+  for fileWithPath in "$ghosttyDotfilesDir"/*; do
+    # Separate the file name from the full path
+    fileName=$(basename "$fileWithPath")
+    # Archive the existing config file into the archive dir
+    mv $ghosttyConfigDir/$fileName $oldDir/$fileName
+    # Link the config file in the git-tracked dotfiles dir to the
+    # ghostty config dir so that ghostty can find it.
+    ln -s $fileWithPath $ghosttyConfigDir/$fileName
+  done
+}
+
 main() {
   . .profile
 
   setup_dotfile_symlinks
   setup_nvim_config_symlinks
+  setup_ghostty_config_symlinks
 }
 
 main
