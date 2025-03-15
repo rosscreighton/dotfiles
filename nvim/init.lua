@@ -143,16 +143,13 @@ LazyPlugins = {
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufReadPre", "BufNewFile" },
 		build = ":TSUpdate",
-		dependencies = {
-			"windwp/nvim-ts-autotag",
-		},
 		config = function()
 			local treeSitterConfigs = require("nvim-treesitter.configs") -- Autoclose frontend tags (html, jsx, etc.)
 			treeSitterConfigs.setup({
 				sync_install = false,
 				highlight = { enable = true },
 				indent = { enable = true },
-				autotag = { enable = true }, -- Autoclose frontend tags (html, jsx, etc.)
+				auto_install = true,
 				ensure_installed = {
 					"bash",
 					"css",
@@ -627,6 +624,46 @@ LazyPlugins = {
 					opts.desc = "Smart rename"
 					vim.keymap.set("n", "<leader>mvs", vim.lsp.buf.rename, opts) -- smart rename
 				end,
+			})
+		end,
+	},
+	{ -- Autoclose pairs and tags
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		dependencies = { "windwp/nvim-ts-autotag" },
+		config = function()
+			require("nvim-autopairs").setup({
+				check_ts = true,
+			})
+			require("nvim-ts-autotag").setup({
+				opts = {
+					-- Defaults
+					enable_close = true, -- Auto close tags
+					enable_rename = true, -- Auto rename pairs of tags
+					enable_close_on_slash = true, -- Auto close on trailing </
+				},
+			})
+		end,
+	},
+	{ -- Comments helper
+		"numToStr/Comment.nvim",
+		version = "*",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
+		config = function()
+			require("ts_context_commentstring").setup({
+				enable_autocmd = false,
+			})
+			require("Comment").setup({
+				toggler = {
+					line = "<leader>cc<space>",
+					block = "<leader>c<space>",
+				},
+				opleader = {
+					line = "<leader>cc<space>",
+					block = "<leader>c<space>",
+				},
+				pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
 			})
 		end,
 	},
