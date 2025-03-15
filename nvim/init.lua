@@ -107,8 +107,10 @@ local function toggle_diagnostics()
 		vim.diagnostic.enable()
 	end
 end
-
 vim.keymap.set("n", "<leader>td", toggle_diagnostics, { desc = "Toggle diagnostics" })
+
+-- Keymap to show diagnostics for current line in popup
+vim.keymap.set("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>")
 
 --[[ Global variables used across plugins ]]
 
@@ -144,7 +146,7 @@ LazyPlugins = {
 		event = { "BufReadPre", "BufNewFile" },
 		build = ":TSUpdate",
 		config = function()
-			local treeSitterConfigs = require("nvim-treesitter.configs") -- Autoclose frontend tags (html, jsx, etc.)
+			local treeSitterConfigs = require("nvim-treesitter.configs")
 			treeSitterConfigs.setup({
 				sync_install = false,
 				highlight = { enable = true },
@@ -259,9 +261,34 @@ LazyPlugins = {
 			})
 		end,
 	},
+	{ -- Codeium coding assistant/autocompletion
+		"Exafunction/codeium.nvim",
+		event = { "BufEnter" },
+		config = function()
+			require("codeium").setup({
+				enable_cmp_source = false,
+				virtual_text = {
+					enabled = true,
+					key_bindings = {
+						accept = "<C-y>",
+						-- Accept the next word.
+						accept_word = false,
+						-- Accept the next line.
+						accept_next_line = "<C-D-y>",
+						-- Clear the virtual text.
+						clear = "<C-e>",
+						-- Cycle to the next completion.
+						next = "<C-n>",
+						-- Cycle to the previous completion.
+						prev = "<C-p>",
+					},
+				},
+			})
+		end,
+	},
 	{ -- Status line
 		"nvim-lualine/lualine.nvim",
-		dependencies = { "stevearc/conform.nvim" },
+		dependencies = { "stevearc/conform.nvim", "Exafunction/codeium.nvim" },
 		config = function()
 			local colors = {
 				bgLightGray = "#504945",
@@ -277,6 +304,9 @@ LazyPlugins = {
 				},
 			}
 
+			local get_codeium_status = function()
+				return require("codeium.virtual_text").status_string()
+			end
 			local get_diagnostics_status = function()
 				if vim.diagnostic.is_enabled(nil) then
 					return ""
@@ -347,6 +377,7 @@ LazyPlugins = {
 						{ get_formatters, icon = "FMT:" },
 						{ get_linters, icon = "LNT:" },
 						{ get_diagnostics_status, icon = "DXG:" },
+						{ get_codeium_status, icon = "CDM:" },
 					},
 					lualine_z = {
 						{ get_file_location_and_progress },
@@ -442,8 +473,12 @@ LazyPlugins = {
 					-- Fallback on the LSP for formatting if no formatter is available
 					lsp_format = "fallback",
 				},
-				format_on_save = function()
+				format_on_save = function(bufnr)
 					if vim.g.conform_formatting_enabled then
+						if vim.bo[bufnr].filetype == "sql" then
+							-- I really don't like sleeks style but it's the only decent sql formatter i can find atm
+							return
+						end
 						return {
 							timeout_ms = 500, -- How long to block for formatting
 							lsp_format = "fallback",
@@ -463,6 +498,19 @@ LazyPlugins = {
 			end
 
 			vim.keymap.set("n", "<leader>tf", toggle_formatting, {})
+
+			vim.api.nvim_create_user_command("ConformFormat", function(args)
+				local range = nil
+				if args.count ~= -1 then
+					local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+					range = {
+						start = { args.line1, 0 },
+						["end"] = { args.line2, end_line:len() },
+					}
+				end
+				require("conform").format({ async = true, lsp_format = "fallback", range = range })
+			end, { range = true })
+			vim.keymap.set("v", "<leader>f", "<cmd>ConformFormat<cr>", {})
 		end,
 	},
 	{ -- Linting
@@ -520,6 +568,15 @@ LazyPlugins = {
 				signature = { enabled = true },
 				completion = {
 					documentation = { auto_show = true },
+					menu = {
+						draw = {
+							columns = {
+								{ "label", "label_description", gap = 1 },
+								{ "kind_icon", "kind", gap = 1 },
+								{ "source_name" },
+							},
+						},
+					},
 				},
 				keymap = {
 					-- See docs for rest of keymaps:
@@ -529,6 +586,9 @@ LazyPlugins = {
 					["<C-k>"] = { "select_prev", "fallback_to_mappings" },
 					["<C-j>"] = { "select_next", "fallback_to_mappings" },
 					["<C-s>"] = { "show_signature", "hide_signature", "fallback" }, -- Show/hide signature when autocompleting a funtion call
+					["<C-n>"] = {}, -- Disable ctrl-n so Codeium can use it
+					["<C-p>"] = {}, -- Disable ctrl-p so Codeium can use it
+					["<C-e>"] = {}, -- Disable ctrl-e so Codeium can use it
 				},
 			})
 		end,
@@ -618,9 +678,6 @@ LazyPlugins = {
 					opts.desc = "Show LSP type definitions"
 					vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
 
-					opts.desc = "Show diagnostics for current line in popup"
-					vim.keymap.set("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-
 					opts.desc = "Smart rename"
 					vim.keymap.set("n", "<leader>mvs", vim.lsp.buf.rename, opts) -- smart rename
 				end,
@@ -636,6 +693,7 @@ LazyPlugins = {
 				check_ts = true,
 			})
 			require("nvim-ts-autotag").setup({
+				-- Enable auto tags in jsx, html, etc.
 				opts = {
 					-- Defaults
 					enable_close = true, -- Auto close tags
