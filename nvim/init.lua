@@ -194,6 +194,9 @@ LazyPlugins = {
 						i = {
 							["<C-j>"] = "move_selection_next",
 							["<C-k>"] = "move_selection_previous",
+							--[[ Clear whatever telescope's mapping is so we can use crtl-u to clear 
+							--the search input in telescope ]]
+							["<C-u>"] = false,
 						},
 					},
 					file_ignore_patterns = {
@@ -675,8 +678,13 @@ LazyPlugins = {
 					opts.desc = "Show LSP Iplementations"
 					vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
 
-					opts.desc = "Show LSP type definitions"
-					vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+					opts.desc = "Show LSP tags in this buffer"
+					vim.keymap.set(
+						"n",
+						"gs",
+						"<cmd>Telescope lsp_document_symbols ignore_symbols=variable sort_last_used=false<CR>",
+						opts
+					) -- show lsp symbols in this buffer (functions, classes, methods, etc.)
 
 					opts.desc = "Smart rename"
 					vim.keymap.set("n", "<leader>mvs", vim.lsp.buf.rename, opts) -- smart rename
