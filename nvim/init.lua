@@ -226,7 +226,6 @@ LazyPlugins = {
 				local miniFiles = require("mini.files")
 				if not miniFiles.close() then
 					miniFiles.open()
-					miniFiles.reset()
 				end
 			end
 
@@ -287,6 +286,11 @@ LazyPlugins = {
 					},
 				},
 			})
+			local function toggle_codeium()
+				vim.g.conform_formatting_enabled = not vim.g.conform_formatting_enabled
+			end
+
+			vim.keymap.set("n", "<leader>ta", toggle_codeium, {})
 		end,
 	},
 	{ -- Status line
@@ -308,7 +312,11 @@ LazyPlugins = {
 			}
 
 			local get_codeium_status = function()
-				return require("codeium.virtual_text").status_string()
+				if vim.g.codeium_enabled then
+					return require("codeium.virtual_text").status_string()
+				else
+					return "󰜺"
+				end
 			end
 			local get_diagnostics_status = function()
 				if vim.diagnostic.is_enabled(nil) then
@@ -528,10 +536,10 @@ LazyPlugins = {
 				python = { "ruff" },
 				sh = { "shellcheck" },
 				shell = { "shellcheck" },
-				sql = { "sqlfluff" },
 				terraform = { "tflint" },
 				typescript = { "eslint_d" },
 				typescriptreact = { "eslint_d" },
+				json = { "jsonlint" },
 			}
 
 			local function toggle_linting()
@@ -731,6 +739,39 @@ LazyPlugins = {
 				},
 				pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
 			})
+		end,
+	},
+	{ -- CSV helper
+		"cameron-wags/rainbow_csv.nvim",
+		config = true,
+		ft = {
+			"csv",
+			"tsv",
+			"csv_semicolon",
+			"csv_whitespace",
+			"csv_pipe",
+			"rfc_csv",
+			"rfc_semicolon",
+		},
+		cmd = {
+			"RainbowDelim",
+			"RainbowDelimSimple",
+			"RainbowDelimQuoted",
+			"RainbowMultiDelim",
+		},
+	},
+	{
+		"toppair/peek.nvim",
+		event = { "VeryLazy" },
+		build = "deno task --quiet build:fast",
+		config = function()
+			local peek = require("peek")
+			peek.setup({
+				theme = "light",
+			})
+			vim.api.nvim_create_user_command("PeekOpen", peek.open, {})
+			vim.api.nvim_create_user_command("PeekClose", peek.close, {})
+			vim.keymap.set("n", "<leader>mp", peek.open, {})
 		end,
 	},
 }

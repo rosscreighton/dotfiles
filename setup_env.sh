@@ -77,8 +77,8 @@ setup_ghostty_config_symlinks() {
 main() {
   . .profile
 
-  setup_dotfile_symlinks
-  setup_nvim_config_symlinks
+  # setup_dotfile_symlinks
+  # setup_nvim_config_symlinks
   setup_ghostty_config_symlinks
 }
 

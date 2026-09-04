@@ -10,3 +10,5 @@ node_modules
 .sass-cache/*
 scratch/*
 .tmuxinator.yml
+
+**/.claude/settings.local.json

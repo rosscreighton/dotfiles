@@ -35,6 +35,28 @@ install_brew_packages() {
   brew update && brew install "${packages[@]}"
 }
 
+install_usql() {
+  echo "Installing usql"
+  brew tap xo/xo
+  brew install --with-odbc xo/xo/usql
+}
+
+install_usql() {
+  echo "Installing psql, pg_dump, etc"
+  brew install libpq
+  # libpq provides some of the same utils as the full postgresql package, so brew installs
+  # it "keg-only" by default, which means it isn't in the PATH. The following command will
+  # symlink the executables to /usr/local/bin but these links will prevent you from
+  # installing the full postgresql package in the future.
+  brew link --force libpq
+}
+
+install_terraform() {
+  echo "Installing Terraform"
+  brew tap hashicorp/tap
+  brew install hashicorp/tap/terraform
+}
+
 install_rust() {
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 }
@@ -83,6 +105,11 @@ install_docker() {
   brew install --cask docker
 }
 
+install_uv() {
+  echo "Installing uv"
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+}
+
 install_python() {
   echo "Installing python stuff"
   pyenv install 3.12.1
@@ -111,6 +138,9 @@ main() {
   install_command_line_tools
   install_git_completion
   install_brew_packages
+  install_usql
+  install_psql
+  install_terraform
   install_rust
   install_ruby
   install_gems
@@ -118,6 +148,7 @@ main() {
   install_nvm
   install_node
   install_docker
+  install_uv
   install_python
   install_gitx
 }

@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 ### TERMINAL PREFS
 #------------------------------------------------------------
 
@@ -7,11 +9,13 @@ export TERM=xterm-256color
 export EDITOR='vim'
 export AWS_DEFAULT_REGION=us-east-1
 
+### GHOSTTY PREFS
+#-------------------------------------------------------------
+export GHOSTTY_CONFIG_DIR=~/dotfiles/ghostty/
 
 ### HOMEBREW SETUP
 #------------------------------------------------------------
 eval "$(/opt/homebrew/bin/brew shellenv)"
-
 
 ## ALIASES
 #------------------------------------------------------------
@@ -107,38 +111,42 @@ if [ -f "$PROJECTS_CONF" ]; then
 fi
 
 # clean branches local
-alias git-cbl="git co master && git branch --merged | grep -v '\*\|master\|develop' | xargs -n 1 git branch -d"
+git_cbl() {
+  base_branch=${1:-main}  # Use the first argument as base branch, default to "main"
+  git checkout "$base_branch" && git branch --merged | grep -v "\*\|$base_branch\|develop\|prod" | xargs -n 1 git branch -d
+}
 # clean branches remote
-alias git-cbr="git co master && git branch -r --merged | grep -v '\*\|master\|develop' | sed 's/origin\///' | xargs -n 1 git push --delete origin"
+git_cbr() {
+    base_branch=${1:-main}  # Default to master if no parameter is provided
 
-
+    git checkout "$base_branch" && git branch -r --merged | grep -v "\*\|master\|develop\|main\|prod" | sed 's/origin\///' | xargs -n 1 git push --delete origin
+}
 
 ### PERMISSIONS
 #------------------------------------------------------------
 
-  # DISABLED. Left here for reference.
-  #
-  # why do we change the default umask?
-  #
-  # the goal is to have multiple accounts on a dev machine,
-  # one for personal work, one for company work. we also want
-  # to be able to use homebrew to manage packages. homebrew
-  # installs packages at a system level, and all user accounts
-  # share these packages. the permissions on the homebrew
-  # install directory are set based on the user installing the
-  # package, so we get permission denied errors when one user
-  # installs a package and another attempts to uninstall or
-  # upgrade it. in order to use homebrew in this way, one must
-  # continuously switch the owner of the homebrew dir between
-  # users. the way we avoid this headache is to create a third
-  # entity, a group, add each user to it, and make this group the
-  # owner of the homebrew dir. see ./setup_homebrew_permissions
-  # for details. groups cannot have write permissions by default,
-  # so in order for ./setup_homebrew_permissions.sh to work, we
-  # must change the user's default umask to 002:
+# DISABLED. Left here for reference.
+#
+# why do we change the default umask?
+#
+# the goal is to have multiple accounts on a dev machine,
+# one for personal work, one for company work. we also want
+# to be able to use homebrew to manage packages. homebrew
+# installs packages at a system level, and all user accounts
+# share these packages. the permissions on the homebrew
+# install directory are set based on the user installing the
+# package, so we get permission denied errors when one user
+# installs a package and another attempts to uninstall or
+# upgrade it. in order to use homebrew in this way, one must
+# continuously switch the owner of the homebrew dir between
+# users. the way we avoid this headache is to create a third
+# entity, a group, add each user to it, and make this group the
+# owner of the homebrew dir. see ./setup_homebrew_permissions
+# for details. groups cannot have write permissions by default,
+# so in order for ./setup_homebrew_permissions.sh to work, we
+# must change the user's default umask to 002:
 
 # umask 002
-
 
 ### SET UP PYENV
 #------------------------------------------------------------
@@ -146,18 +154,15 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-
 ### SET UP RBENV
 #------------------------------------------------------------
 eval "$(rbenv init -)"
 export RBENV_VERSION=3.3.0
 
-
 ### SnowSQL Setup
 #------------------------------------------------------------
 
 alias snowsql=/Applications/SnowSQL.app/Contents/MacOS/snowsql
-
 
 ### SOURCING
 #------------------------------------------------------------
@@ -171,19 +176,18 @@ fi
 
 # set up nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 ### CUSTOM COMMAND PROMPT
 #------------------------------------------------------------
 
 function parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1]/"
+  git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1]/"
 }
 
 function parse_hg_branch {
-  hg branch 2> /dev/null | sed -e "s/\(.*\)/[\1]/"
+  hg branch 2>/dev/null | sed -e "s/\(.*\)/[\1]/"
 }
 
 function parse_jobs_count {
@@ -193,10 +197,11 @@ function parse_jobs_count {
 function parse_virtualenv {
   VENV=""
 
-  if [[ $VIRTUAL_ENV != "" ]]; then
-    VENV+="<${VIRTUAL_ENV##*/}>"
+  if [[ $VIRTUAL_ENV_PROMPT != "" ]]; then
+    VENV+="<${VIRTUAL_ENV_PROMPT##*/}>"
+  elif [[ $VIRTUAL_ENV != "" ]]; then
+    VENV+="<$VIRTUAL_ENV>"
   fi
-
   echo $VENV
 }
 
@@ -222,7 +227,7 @@ function __prompt_command {
 
   # Is it bad?
   if [ $EXIT != 0 ]; then
-    PS1+="\[${Red}\]→ $EXIT\[${Color_Off}\] "      # Add red if exit code non 0
+    PS1+="\[${Red}\]→ $EXIT\[${Color_Off}\] " # Add red if exit code non 0
   fi
 
   PS1+="\n$ "
@@ -233,5 +238,8 @@ export PROMPT_COMMAND=__prompt_command
 # added by Snowflake SnowSQL installer v1.2
 export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH
 
-# Added by rust installer 
+# Added by rust installer
 . "$HOME/.cargo/env"
+
+# uv
+export PATH="/Users/rosscreighton/.local/bin:$PATH"

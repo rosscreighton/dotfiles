@@ -1,4 +1,4 @@
 font-family = JetBrainsMonoNL NFM Regular
 font-size = 16
-theme = gruvbox-material
+theme = gruvbox-material-hard-dark
 font-feature = -calt, -liga, -dlig

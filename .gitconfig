@@ -19,6 +19,7 @@
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci, %cn)%Creset' --abbrev-commit
 [push]
   default = current
+  followTags = true
 [pull]
   default = current
 [core]
@@ -26,3 +27,7 @@
 	excludesfile = /Users/rosscreighton/.gitignore
 [commit]
 	template = /Users/rosscreighton/.stCommitMsg
+[coderabbit]
+	machineId = cli/63b11cf3f6cf41fd917a5fee48be82ee
+[url "git@github.com:"]
+	insteadOf = https://github.com/
