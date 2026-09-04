@@ -31,43 +31,80 @@ alias dkr-stop='docker stop $(docker ps -aq)'
 alias dkr-rm='docker rm $(docker ps -aq)'
 alias dkr-rmi='docker rmi $(docker images -q)'
 
-alias td="cd ~/todos/"
-alias tdup="td && tmuxinator local"
-alias tddown="tmux kill-session -t todos"
-
-alias gush="cd ~/projects/gush/gush"
-alias gush-start="gush && tmuxinator local"
-alias gush-stop="tmux kill-session -t gush"
-
-alias portal="cd ~/projects/fws/portal"
-alias portal-start="portal && tmuxinator local"
-alias portal-stop="tmux kill-session -t portal"
-
-alias helix="cd ~/projects/fws/helix2"
-alias helix-start="helix && tmuxinator local"
-alias helix-stop="tmux kill-session -t helix"
-
-alias fwswm="cd ~/projects/fws/fws-windmill"
-alias fwswm-start="fwswm && tmuxinator local"
-alias fwswm-stop="tmux kill-session -t fwswm"
-
-alias ft="cd ~/projects/fantasy_toolbox"
-alias ft-start="ft && tmuxinator local"
-alias ft-stop="tmux kill-session -t fantasy_toolbox"
-
-alias rtyl-lnd="cd ~/projects/arterial/landing-page"
-alias rtyl-lnd-start="rtyl-lnd && tmuxinator local"
-alias rtyl-lnd-stop="tmux kill-session -t arterial_landingPage"
-
-alias renovo="cd ~/projects/renovo/safelum_back_office_v0"
-alias renovo-start="renovo && tmuxinator local"
-alias renovo-stop="tmux kill-session -t safelum_back_office_v0"
-
-alias ccil="cd ~/projects/arterial/ccil"
-alias ccil-start="ccil && tmuxinator local"
-alias ccil-stop="tmux kill-session -t ccil"
-
 alias dots="cd ~/dotfiles/"
+
+### PROJECT SESSIONS
+#------------------------------------------------------------
+# Projects are registered in ~/.projects.conf, a machine-local file
+# that is NOT tracked in this repo. Line format:
+#   <name> <path> <active: yes|no>
+# For each project this generates three aliases: <name> (cd to it),
+# <name>-start (launch its tmuxinator session), <name>-stop (kill it).
+# `projects-up` starts the tmux session for every active project,
+# detached, skipping ones already running.
+
+PROJECTS_CONF="$HOME/.projects.conf"
+
+# Path to the project-local tmuxinator config, if any
+_project_conf_file() {
+  if [ -f "$1/.tmuxinator.yml" ]; then
+    echo "$1/.tmuxinator.yml"
+  elif [ -f "$1/.tmuxinator.rc.yml" ]; then
+    echo "$1/.tmuxinator.rc.yml"
+  else
+    return 1
+  fi
+}
+
+# Session name declared in a tmuxinator config
+_project_session() {
+  awk '$1 == "name:" { print $2; exit }' "$1"
+}
+
+project_start() {
+  local conf
+  conf=$(_project_conf_file "$1") || { echo "no .tmuxinator*.yml in $1" >&2; return 1; }
+  cd "$1" && tmuxinator start -p "$conf"
+}
+
+project_stop() {
+  local conf
+  conf=$(_project_conf_file "$1") || { echo "no .tmuxinator*.yml in $1" >&2; return 1; }
+  tmux kill-session -t "=$(_project_session "$conf")"
+}
+
+projects_up() {
+  local name path active conf session
+  if [ ! -f "$PROJECTS_CONF" ]; then
+    echo "$PROJECTS_CONF not found" >&2
+    return 1
+  fi
+  while read -r name path active _; do
+    case "$name" in ''|\#*) continue ;; esac
+    [ "$active" = "yes" ] || continue
+    path="${path/#\~/$HOME}"
+    conf=$(_project_conf_file "$path") || { echo "SKIP  $name — no tmuxinator config in $path"; continue; }
+    session=$(_project_session "$conf")
+    if tmux has-session -t "=$session" 2>/dev/null; then
+      echo "OK    $session — already running"
+    elif (cd "$path" && tmuxinator start -p "$conf" --no-attach >/dev/null 2>&1); then
+      echo "UP    $session"
+    else
+      echo "FAIL  $session — tmuxinator start failed"
+    fi
+  done < "$PROJECTS_CONF"
+}
+alias projects-up="projects_up"
+
+if [ -f "$PROJECTS_CONF" ]; then
+  while read -r _pj_name _pj_path _pj_active _; do
+    case "$_pj_name" in ''|\#*) continue ;; esac
+    alias "$_pj_name"="cd $_pj_path"
+    alias "$_pj_name-start"="project_start $_pj_path"
+    alias "$_pj_name-stop"="project_stop $_pj_path"
+  done < "$PROJECTS_CONF"
+  unset _pj_name _pj_path _pj_active
+fi
 
 # clean branches local
 alias git-cbl="git co master && git branch --merged | grep -v '\*\|master\|develop' | xargs -n 1 git branch -d"
