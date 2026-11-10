@@ -122,6 +122,100 @@ git_cbr() {
     git checkout "$base_branch" && git branch -r --merged | grep -v "\*\|master\|develop\|main\|prod" | sed 's/origin\///' | xargs -n 1 git push --delete origin
 }
 
+# clean worktrees
+#--------------------------------------------------------------
+# Remove every worktree whose work is already in main/master.
+#   -n  dry run, just report
+#   -f  also remove worktrees with uncommitted changes
+#   -s  also match squash-merged branches (compares content, not
+#       ancestry — needed for GitHub's "Squash and merge")
+# The base branch is your local main/master, so fetch and fast
+# forward it first or nothing will look merged.
+#--------------------------------------------------------------
+git_wt_prune() {
+  local dry=0 force="" squash=0
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -n) dry=1 ;;
+      -f) force="--force" ;;
+      -s) squash=1 ;;
+      *) echo "usage: git_wt_prune [-n] [-f] [-s]" >&2; return 1 ;;
+    esac
+    shift
+  done
+
+  local base
+  if git show-ref --verify --quiet refs/heads/main; then
+    base=main
+  elif git show-ref --verify --quiet refs/heads/master; then
+    base=master
+  else
+    echo "no main or master branch" >&2
+    return 1
+  fi
+
+  local mainWt currentWt
+  mainWt=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
+  currentWt=$(git rev-parse --show-toplevel 2>/dev/null)
+
+  local path branch head label merged mergeBase probe
+  while IFS=$'\t' read -r path branch head; do
+    [ -n "$path" ] || continue
+    branch=${branch#refs/heads/}
+    [ "$branch" = "-" ] && branch=""
+    label=${branch:-detached}
+
+    if [ "$path" = "$mainWt" ]; then
+      echo "SKIP   $label — main worktree"
+      continue
+    fi
+    if [ "$path" = "$currentWt" ]; then
+      echo "SKIP   $label — you are in it"
+      continue
+    fi
+    if [ "$branch" = "$base" ]; then
+      echo "SKIP   $label — base branch"
+      continue
+    fi
+
+    merged=""
+    if git merge-base --is-ancestor "$head" "$base"; then
+      merged="merged"
+    elif [ "$squash" = 1 ]; then
+      # Replay the branch's tree onto the merge base; if that patch is
+      # already in base, the branch was squash merged.
+      mergeBase=$(git merge-base "$base" "$head")
+      probe=$(git commit-tree "$(git rev-parse "$head^{tree}")" -p "$mergeBase" -m _)
+      if git cherry "$base" "$probe" | grep -q '^-'; then
+        merged="squash merged"
+      fi
+    fi
+
+    if [ -z "$merged" ]; then
+      echo "KEEP   $label — not merged into $base"
+      continue
+    fi
+    if [ "$dry" = 1 ]; then
+      echo "WOULD  $label — $merged, $path"
+      continue
+    fi
+
+    if git worktree remove $force "$path" 2>/dev/null; then
+      if [ -n "$branch" ] && git branch -D "$branch" >/dev/null 2>&1; then
+        echo "GONE   $label — $merged, worktree and branch removed"
+      else
+        echo "GONE   $label — $merged, worktree removed"
+      fi
+    else
+      echo "DIRTY  $label — uncommitted changes, rerun with -f"
+    fi
+  done < <(git worktree list --porcelain | awk '
+    /^worktree /  { p = substr($0, 10) }
+    /^HEAD /      { h = substr($0, 6) }
+    /^branch /    { print p "\t" substr($0, 8) "\t" h; p = h = "" }
+    /^detached$/  { print p "\t-\t" h; p = h = "" }')
+}
+
 ### PERMISSIONS
 #------------------------------------------------------------
 
