@@ -286,8 +286,11 @@ LazyPlugins = {
 					},
 				},
 			})
+			vim.g.codeium_enabled = true
 			local function toggle_codeium()
-				vim.g.conform_formatting_enabled = not vim.g.conform_formatting_enabled
+				vim.g.codeium_enabled = not vim.g.codeium_enabled
+				require("codeium.config").options.virtual_text.manual = not vim.g.codeium_enabled
+				require("codeium.virtual_text").clear()
 			end
 
 			vim.keymap.set("n", "<leader>ta", toggle_codeium, {})
