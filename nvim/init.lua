@@ -784,3 +784,141 @@ LazyPlugins = {
 LazyOpts = {}
 
 require("lazy").setup(LazyPlugins, LazyOpts)
+
+--[[ Git worktrees ]]
+
+--[[ Root of the worktree containing the current directory. ]]
+local function worktree_root()
+	local res = vim.system({ "git", "rev-parse", "--show-toplevel" }, { text = true }):wait()
+	if res.code ~= 0 then
+		return nil
+	end
+	return vim.fn.resolve(vim.trim(res.stdout))
+end
+
+local function git_worktrees()
+	local res = vim.system({ "git", "worktree", "list", "--porcelain" }, { text = true }):wait()
+	if res.code ~= 0 then
+		vim.notify("Not in a git repository", vim.log.levels.WARN)
+		return {}
+	end
+	local worktrees, current = {}, nil
+	for line in res.stdout:gmatch("[^\n]+") do
+		local path = line:match("^worktree (.+)$")
+		local branch = line:match("^branch refs/heads/(.+)$")
+		if path then
+			current = { path = vim.fn.resolve(path), branch = "(detached)" }
+			table.insert(worktrees, current)
+		elseif branch and current then
+			current.branch = branch
+		end
+	end
+	return worktrees
+end
+
+--[[ Move the whole editor to another worktree. Telescope and mini.files both
+read the cwd, so `:cd` re-roots the file picker, the grep pickers and the file
+sidebar in one go. Every window is repointed at the same file in the new tree
+(same cursor position), then the old tree's buffers are dropped so bufferline
+never shows two checkouts at once. ]]
+local function switch_worktree(newRoot)
+	local root = worktree_root()
+	if not root or newRoot == root then
+		return
+	end
+
+	--[[ If nvim was started in a subdirectory (the `editor_client` window in the
+	helix tmuxinator config), stay in the matching subdirectory. ]]
+	local cwd = vim.fn.resolve(vim.uv.cwd())
+	local cwdRel = cwd == root and "" or cwd:sub(#root + 2)
+
+	local layout = {}
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local bufName = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win))
+		if vim.startswith(bufName, root .. "/") then
+			layout[win] = { rel = bufName:sub(#root + 2), cursor = vim.api.nvim_win_get_cursor(win) }
+		end
+	end
+
+	pcall(require("mini.files").close)
+	vim.cmd("silent! wall")
+
+	local newCwd = newRoot
+	if cwdRel ~= "" and vim.uv.fs_stat(newRoot .. "/" .. cwdRel) then
+		newCwd = newRoot .. "/" .. cwdRel
+	end
+	vim.cmd.cd(vim.fn.fnameescape(newCwd))
+
+	--[[ Repoint windows before deleting the old buffers: deleting a buffer that
+	is on screen would close its window and collapse the split layout. ]]
+	for win, view in pairs(layout) do
+		if vim.api.nvim_win_is_valid(win) then
+			local target = newRoot .. "/" .. view.rel
+			vim.api.nvim_win_call(win, function()
+				if vim.uv.fs_stat(target) then
+					vim.cmd.edit(vim.fn.fnameescape(target))
+					pcall(vim.api.nvim_win_set_cursor, win, view.cursor)
+				else
+					vim.cmd.enew() -- File doesn't exist on this branch
+				end
+			end)
+		end
+	end
+
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.startswith(vim.api.nvim_buf_get_name(buf), root .. "/") then
+			vim.api.nvim_buf_delete(buf, { force = true })
+		end
+	end
+
+	--[[ The servers are still rooted in the old worktree. LspRestart waits for
+	them to exit and relaunches against the reopened buffers, which recomputes
+	root_dir in the new tree. Stopping them by hand instead races the shutdown
+	and leaves the buffers with no client attached. ]]
+	vim.cmd("LspRestart")
+
+	vim.notify("worktree: " .. vim.fn.fnamemodify(newRoot, ":t"))
+end
+
+local function worktree_picker()
+	local worktrees = git_worktrees()
+	if #worktrees == 0 then
+		return
+	end
+	local root = worktree_root()
+	local pickers = require("telescope.pickers")
+	local finders = require("telescope.finders")
+	local actions = require("telescope.actions")
+	local actionState = require("telescope.actions.state")
+
+	pickers
+		.new({}, {
+			prompt_title = "Git worktrees",
+			finder = finders.new_table({
+				results = worktrees,
+				entry_maker = function(wt)
+					return {
+						value = wt,
+						ordinal = wt.branch .. " " .. wt.path,
+						display = string.format(
+							"%s%-28s %s",
+							wt.path == root and "* " or "  ",
+							wt.branch,
+							vim.fn.fnamemodify(wt.path, ":~")
+						),
+					}
+				end,
+			}),
+			sorter = require("telescope.config").values.generic_sorter({}),
+			attach_mappings = function(bufnr)
+				actions.select_default:replace(function()
+					actions.close(bufnr)
+					switch_worktree(actionState.get_selected_entry().value.path)
+				end)
+				return true
+			end,
+		})
+		:find()
+end
+
+vim.keymap.set("n", "<leader>gw", worktree_picker, { desc = "Switch git worktree" })
