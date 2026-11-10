@@ -271,6 +271,8 @@ LazyPlugins = {
 				enable_cmp_source = false,
 				virtual_text = {
 					enabled = true,
+					-- Off by default; <leader>ta turns on automatic suggestions.
+					manual = true,
 					key_bindings = {
 						accept = "<C-y>",
 						-- Accept the next word.
@@ -286,7 +288,7 @@ LazyPlugins = {
 					},
 				},
 			})
-			vim.g.codeium_enabled = true
+			vim.g.codeium_enabled = false
 			local function toggle_codeium()
 				vim.g.codeium_enabled = not vim.g.codeium_enabled
 				require("codeium.config").options.virtual_text.manual = not vim.g.codeium_enabled
